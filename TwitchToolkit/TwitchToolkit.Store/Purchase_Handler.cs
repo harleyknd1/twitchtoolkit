@@ -190,14 +190,8 @@ public static class Purchase_Handler
 			return false;
 		}
 		Store_Component component = Current.Game.GetComponent<Store_Component>();
-		return incident.karmaType switch
-		{
-			KarmaType.Bad => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval,
-			KarmaType.Good => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxGoodEventsPerInterval,
-			KarmaType.Neutral => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxNeutralEventsPerInterval,
-			KarmaType.Doom => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval,
-			_ => false,
-		};
+		int cap = Karma.GetKarmaCap(incident.karmaType);
+		return component.KarmaTypesInLogOf(incident.karmaType) >= cap;
 	}
 
 	public static bool CheckIfCarePackageIsOnCooldown(string username, bool separateChannel = false)
