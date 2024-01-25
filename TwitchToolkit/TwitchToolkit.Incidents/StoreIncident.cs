@@ -17,4 +17,6 @@ public class StoreIncident : Def
 	public KarmaType karmaType;
 
 	public int variables = 0;
+
+	public bool IsItem => defName == "Item";
 }

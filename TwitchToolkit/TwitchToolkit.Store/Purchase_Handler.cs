@@ -74,7 +74,7 @@ public static class Purchase_Handler
 
 	public static void ResolvePurchaseSimple(Viewer viewer, ITwitchMessage twitchMessage, StoreIncidentSimple incident, string formattedMessage, bool separateChannel = false)
 	{
-        int cost = incident.cost;
+		int cost = incident.cost;
 		if (cost < 1 || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost) || CheckIfKarmaTypeIsMaxed(incident, viewer.username) || CheckIfIncidentIsOnCooldown(incident, viewer.username))
 		{
 			return;
@@ -110,18 +110,18 @@ public static class Purchase_Handler
 	public static void ResolvePurchaseVariables(Viewer viewer, ITwitchMessage twitchMessage, StoreIncidentVariables incident, string formattedMessage, bool separateChannel = false)
 	{
 		int cost = incident.cost;
-		if ((cost < 1 && ((Def)incident).defName != "Item") || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost))
+		if ((cost < 1 && !incident.IsItem) || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost))
 		{
 			return;
 		}
-		if (incident != DefDatabase<StoreIncidentVariables>.GetNamed("Item", true))
+		if (incident.IsItem)
 		{
-			if (CheckIfKarmaTypeIsMaxed(incident, viewer.username))
+			if (CheckIfCarePackageIsOnCooldown(viewer.username))
 			{
 				return;
 			}
 		}
-		else if (CheckIfCarePackageIsOnCooldown(viewer.username))
+		else if (CheckIfKarmaTypeIsMaxed(incident, viewer.username))
 		{
 			return;
 		}
@@ -192,11 +192,11 @@ public static class Purchase_Handler
 		Store_Component component = Current.Game.GetComponent<Store_Component>();
 		return incident.karmaType switch
 		{
-			KarmaType.Bad => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval, 
-			KarmaType.Good => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxGoodEventsPerInterval, 
-			KarmaType.Neutral => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxNeutralEventsPerInterval, 
-			KarmaType.Doom => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval, 
-			_ => false, 
+			KarmaType.Bad => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval,
+			KarmaType.Good => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxGoodEventsPerInterval,
+			KarmaType.Neutral => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxNeutralEventsPerInterval,
+			KarmaType.Doom => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval,
+			_ => false,
 		};
 	}
 

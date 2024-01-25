@@ -63,7 +63,7 @@ public class Store_Component : GameComponent
 		List<int> associateLogIDS = new List<int>();
 		float ticksTillExpires = -1f;
 		float daysTillCooldownExpires = -1f;
-		if (((Def)incident).defName == "Item")
+		if (incident.IsItem)
 		{
 			if (ToolkitSettings.MaxEvents)
 			{
