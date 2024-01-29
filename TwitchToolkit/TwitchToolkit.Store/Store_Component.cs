@@ -63,12 +63,25 @@ public class Store_Component : GameComponent
 		return karmaHistory.Count((KeyValuePair<int, string> pair) => pair.Value == karma);
 	}
 
-	public float DaysTillIncidentIsPurchaseable(StoreIncident incident)
+	public float DaysTillIncidentIsPurchaseable(StoreIncident incident) => DaysTillIncidentIsPurchaseable(incident, out _);
+
+	public float DaysTillIncidentIsPurchaseable(StoreIncident incident, out bool isKarmaCapped)
 	{
 		int karmaTick = GetKarmaOrItemCooldown(incident);
 		int capTick = GetIncidentCooldown(incident);
 
-		int cooldownTick = Math.Max(karmaTick, capTick);
+		int cooldownTick;
+		if (karmaTick >= capTick)
+		{
+			cooldownTick = karmaTick;
+			isKarmaCapped = true;
+		}
+		else
+		{
+			cooldownTick = capTick;
+			isKarmaCapped = false;
+		}
+
 		if (cooldownTick < 0)
 		{
 			return -1;
