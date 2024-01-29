@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,9 +22,10 @@ public static class Purchase_Handler
 	{
 		allStoreIncidentsSimple = DefDatabase<StoreIncidentSimple>.AllDefs.ToList();
 		allStoreIncidentsVariables = DefDatabase<StoreIncidentVariables>.AllDefs.ToList();
-		Helper.Log("trying to load vars after def database loaded");
-		((Mod)Toolkit.Mod).GetSettings<ToolkitSettings>();
 		viewerNamesDoingVariableCommands = new List<string>();
+
+		Helper.Log("trying to load vars after def database loaded");
+		Toolkit.Mod.GetSettings<ToolkitSettings>();
 	}
 
 	public static void ResolvePurchase(Viewer viewer, ITwitchMessage twitchMessage, bool separateChannel = false)
@@ -74,8 +76,8 @@ public static class Purchase_Handler
 
 	public static void ResolvePurchaseSimple(Viewer viewer, ITwitchMessage twitchMessage, StoreIncidentSimple incident, string formattedMessage, bool separateChannel = false)
 	{
-        int cost = incident.cost;
-		if (cost < 1 || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost) || CheckIfKarmaTypeIsMaxed(incident, viewer.username) || CheckIfIncidentIsOnCooldown(incident, viewer.username))
+		int cost = incident.cost;
+		if (cost < 1 || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost) || IsPurchaseMaxed(incident, viewer.username))
 		{
 			return;
 		}
@@ -87,7 +89,7 @@ public static class Purchase_Handler
 		}
 		if (!helper.IsPossible())
 		{
-			TwitchWrapper.SendChatMessage(("@" + viewer.username + " " + Translator.Translate("TwitchToolkitEventNotPossible")));
+			TwitchWrapper.SendChatMessage("@" + viewer.username + " " + "TwitchToolkitEventNotPossible".Translate());
 			return;
 		}
 		if (!ToolkitSettings.UnlimitedCoins)
@@ -103,29 +105,18 @@ public static class Purchase_Handler
 		viewer.CalculateNewKarma(incident.karmaType, cost);
 		if (ToolkitSettings.PurchaseConfirmations)
 		{
-			TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder((Translator.Translate("TwitchToolkitEventPurchaseConfirm")), null, null, null, null, null, null, null, null, null, null, null, null, first: GenText.CapitalizeFirst(((Def)incident).label), viewer: viewer.username));
+			TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder("TwitchToolkitEventPurchaseConfirm".Translate(), first: GenText.CapitalizeFirst(incident.label), viewer: viewer.username));
 		}
 	}
 
 	public static void ResolvePurchaseVariables(Viewer viewer, ITwitchMessage twitchMessage, StoreIncidentVariables incident, string formattedMessage, bool separateChannel = false)
 	{
 		int cost = incident.cost;
-		if ((cost < 1 && ((Def)incident).defName != "Item") || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost))
+		if ((cost < 1 && !incident.IsItem) || CheckIfViewerIsInVariableCommandList(viewer.username) || !CheckIfViewerHasEnoughCoins(viewer, cost))
 		{
 			return;
 		}
-		if (incident != DefDatabase<StoreIncidentVariables>.GetNamed("Item", true))
-		{
-			if (CheckIfKarmaTypeIsMaxed(incident, viewer.username))
-			{
-				return;
-			}
-		}
-		else if (CheckIfCarePackageIsOnCooldown(viewer.username))
-		{
-			return;
-		}
-		if (CheckIfIncidentIsOnCooldown(incident, viewer.username))
+		if (IsPurchaseMaxed(incident, viewer.username))
 		{
 			return;
 		}
@@ -133,7 +124,7 @@ public static class Purchase_Handler
 		IncidentHelperVariables helper = StoreIncidentMaker.MakeIncidentVariables(incident);
 		if (helper == null)
 		{
-			Helper.Log("Missing helper for incident " + ((Def)incident).defName);
+			Helper.Log("Missing helper for incident " + incident.defName);
 			return;
 		}
 		if (!helper.IsPossible(formattedMessage, viewer))
@@ -159,6 +150,7 @@ public static class Purchase_Handler
 			TwitchWrapper.SendChatMessage("@" + username + " you must wait for the game to unpause to buy something else.");
 			return true;
 		}
+
 		return false;
 	}
 
@@ -166,21 +158,26 @@ public static class Purchase_Handler
 	{
 		if (!ToolkitSettings.UnlimitedCoins && viewer.GetViewerCoins() < finalPrice)
 		{
-			TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder((TaggedString)(Translator.Translate("TwitchToolkitNotEnoughCoins")), null, null, null, null, null, null, null, null, null, null, viewer: viewer.username, amount: finalPrice.ToString(), mod: null, newbalance: null, karma: null, first: viewer.GetViewerCoins().ToString()));
+			TwitchWrapper.SendChatMessage(Helper.ReplacePlaceholder("TwitchToolkitNotEnoughCoins".Translate(), viewer: viewer.username, amount: finalPrice.ToString(), first: viewer.GetViewerCoins().ToString()));
 			return false;
 		}
+
 		return true;
 	}
 
+	[Obsolete]
 	public static bool CheckIfKarmaTypeIsMaxed(StoreIncident incident, string username, bool separateChannel = false)
 	{
-		bool maxed = CheckTimesKarmaTypeHasBeenUsedRecently(incident);
-		if (maxed)
+		if (CheckTimesKarmaTypeHasBeenUsedRecently(incident))
 		{
 			Store_Component component = Current.Game.GetComponent<Store_Component>();
-			TwitchWrapper.SendChatMessage("@" + username + " " + GenText.CapitalizeFirst(((Def)incident).label) + " is maxed from karmatype, wait " + component.DaysTillIncidentIsPurchaseable(incident) + " days to purchase.");
+
+			float daysTill = component.DaysTillIncidentIsPurchaseable(incident);
+			TwitchWrapper.SendChatMessage($"@{username} {GenText.CapitalizeFirst(incident.label)} is maxed from karmatype, wait {GetDays(daysTill)} to purchase.");
+			return true;
 		}
-		return maxed;
+
+		return false;
 	}
 
 	public static bool CheckTimesKarmaTypeHasBeenUsedRecently(StoreIncident incident)
@@ -189,48 +186,49 @@ public static class Purchase_Handler
 		{
 			return false;
 		}
+
 		Store_Component component = Current.Game.GetComponent<Store_Component>();
-		return incident.karmaType switch
-		{
-			KarmaType.Bad => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval, 
-			KarmaType.Good => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxGoodEventsPerInterval, 
-			KarmaType.Neutral => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxNeutralEventsPerInterval, 
-			KarmaType.Doom => component.KarmaTypesInLogOf(incident.karmaType) >= ToolkitSettings.MaxBadEventsPerInterval, 
-			_ => false, 
-		};
+		int cap = Karma.GetKarmaCap(incident.karmaType);
+		return component.KarmaTypesInLogOf(incident.karmaType) >= cap;
 	}
 
+	[Obsolete]
 	public static bool CheckIfCarePackageIsOnCooldown(string username, bool separateChannel = false)
 	{
 		if (!ToolkitSettings.MaxEvents)
 		{
 			return false;
 		}
+
 		Store_Component component = Current.Game.GetComponent<Store_Component>();
 		StoreIncidentVariables incident = DefDatabase<StoreIncidentVariables>.GetNamed("Item", true);
 		if (component.IncidentsInLogOf(incident.abbreviation) >= ToolkitSettings.MaxCarePackagesPerInterval)
 		{
 			float daysTill = component.DaysTillIncidentIsPurchaseable(incident);
-			TwitchWrapper.SendChatMessage("@" + username + " care packages are on cooldown, wait " + daysTill + " day" + ((daysTill != 1f) ? "s" : "") + ".");
+			TwitchWrapper.SendChatMessage($"@{username} care packages are on cooldown, wait {GetDays(daysTill)}.");
 			return true;
 		}
+
 		return false;
 	}
 
+	[Obsolete]
 	public static bool CheckIfIncidentIsOnCooldown(StoreIncident incident, string username, bool separateChannel = false)
 	{
 		if (!ToolkitSettings.EventsHaveCooldowns)
 		{
 			return false;
 		}
+
 		Store_Component component = Current.Game.GetComponent<Store_Component>();
-		bool maxed = component.IncidentsInLogOf(incident.abbreviation) >= incident.eventCap;
-		if (maxed)
+		if (component.IncidentsInLogOf(incident.abbreviation) >= incident.eventCap)
 		{
-			float days = component.DaysTillIncidentIsPurchaseable(incident);
-			TwitchWrapper.SendChatMessage("@" + username + " " + GenText.CapitalizeFirst(((Def)incident).label) + " is maxed, wait " + days + " day" + ((days != 1f) ? "s" : "") + " to purchase.");
+			float daysTill = component.DaysTillIncidentIsPurchaseable(incident);
+			TwitchWrapper.SendChatMessage($"@{username} {GenText.CapitalizeFirst(incident.label)} is maxed, wait {GetDays(daysTill)} to purchase.");
+			return true;
 		}
-		return maxed;
+
+		return false;
 	}
 
 	public static void QueuePlayerMessage(Viewer viewer, string message, int variables = 0)
@@ -254,30 +252,49 @@ public static class Purchase_Handler
 		Helper.playerMessages.Add(output);
 	}
 
+	private static bool IsPurchaseMaxed(StoreIncident incident, string username)
+	{
+		Store_Component component = Current.Game.GetComponent<Store_Component>();
+
+		float daysTill = component.DaysTillIncidentIsPurchaseable(incident, out bool isKarma);
+		if (daysTill < 0)
+		{
+			return false;
+		}
+
+		string days = GetDays(daysTill);
+
+		if (isKarma)
+		{
+			TwitchWrapper.SendChatMessage($"@{username} {GenText.CapitalizeFirst(incident.label)} is maxed from karmatype, wait {days} to purchase.");
+		}
+		else if (incident.IsItem)
+		{
+			TwitchWrapper.SendChatMessage($"@{username} care packages are on cooldown, wait {days}.");
+		}
+		else
+		{
+			TwitchWrapper.SendChatMessage($"@{username} {GenText.CapitalizeFirst(incident.label)} is maxed, wait {days} to purchase.");
+		}
+
+		return true;
+	}
+
+	private static string GetDays(float days) => (days == 1) ? "1 day" : days + " days";
+
 	private static string AdminText(string input)
 	{
-		char[] chars = input.ToCharArray();
 		StringBuilder output = new StringBuilder();
-		char[] array = chars;
-		foreach (char str in array)
+		foreach (char str in input.ToCharArray())
 		{
 			output.Append($"<color=#{Helper.GetRandomColorCode()}>{str}</color>");
 		}
 		return output.ToString();
 	}
 
-	private static string SubText(string input)
-	{
-		return "<color=#D9BB25>" + input + "</color>";
-	}
+	private static string SubText(string input) => "<color=#D9BB25>" + input + "</color>";
 
-	private static string VIPText(string input)
-	{
-		return "<color=#5F49F2>" + input + "</color>";
-	}
+	private static string VIPText(string input) => "<color=#5F49F2>" + input + "</color>";
 
-	private static string ModText(string input)
-	{
-		return "<color=#238C48>" + input + "</color>";
-	}
+	private static string ModText(string input) => "<color=#238C48>" + input + "</color>";
 }

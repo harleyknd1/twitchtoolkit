@@ -98,7 +98,7 @@ public class StoreIncidentsWindow : Window
 		Rect rect3 = new Rect(rect2.xMax + 4f, 0f, ((Rect)(rect)).width - 60f, 24f);
 		Text.Anchor =((TextAnchor)3);
 		Text.WordWrap =(false);
-		if (thingDef.cost < 1 && ((Def)thingDef).defName != "Item")
+		if (thingDef.cost < 1 && !thingDef.IsItem)
 		{
 			GUI.color =(Color.grey);
 		}

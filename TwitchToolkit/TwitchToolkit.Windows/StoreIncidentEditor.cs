@@ -91,7 +91,7 @@ public class StoreIncidentEditor : Window
 			}
 		}
 		((Listing)ls).Gap(12f);
-		if (((Def)storeIncident).defName == "Item")
+		if (storeIncident.IsItem)
 		{
 			ls.SliderLabeled("Max times per " + ToolkitSettings.EventCooldownInterval + " ingame day(s)",  storeIncident.eventCap, storeIncident.eventCap.ToString(), 0f, 15f);
 			((Listing)ls).Gap(12f);
@@ -105,7 +105,7 @@ public class StoreIncidentEditor : Window
 			}
 		}
 		((Listing)ls).Gap(12f);
-		if (((Def)storeIncident).defName != "Item" && ls.ButtonTextLabeled("Reset to Default", "Reset"))
+		if (!storeIncident.IsItem && ls.ButtonTextLabeled("Reset to Default", "Reset"))
 		{
 			Store_IncidentEditor.LoadBackup(storeIncident);
 			if (storeIncident.cost < 1)
@@ -115,7 +115,7 @@ public class StoreIncidentEditor : Window
 			setKarmaType = storeIncident.karmaType.ToString();
 			MakeSureSaveExists();
 		}
-		if (((Def)storeIncident).defName == "Item" && ls.ButtonTextLabeled("Edit item prices", "Edit"))
+		if (storeIncident.IsItem && ls.ButtonTextLabeled("Edit item prices", "Edit"))
 		{
 			Type type = typeof(StoreItemsWindow);
 			Find.WindowStack.TryRemove(type, true);

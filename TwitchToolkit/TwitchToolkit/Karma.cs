@@ -114,6 +114,17 @@ public class Karma
 		return (Convert.ToInt32(Math.Ceiling(newkarma)) > ToolkitSettings.KarmaCap) ? ToolkitSettings.KarmaCap : Convert.ToInt32(Math.Ceiling(newkarma));
 	}
 
+	internal static int GetKarmaCap(KarmaType karmaType)
+	{
+		return karmaType switch
+		{
+			KarmaType.Bad or KarmaType.Doom => ToolkitSettings.MaxBadEventsPerInterval,
+			KarmaType.Good => ToolkitSettings.MaxGoodEventsPerInterval,
+			KarmaType.Neutral => ToolkitSettings.MaxNeutralEventsPerInterval,
+			_ => int.MaxValue,
+		};
+	}
+
 	private static float CalculateForCurve()
 	{
 		return 0.00116279069f * (float)ToolkitSettings.KarmaCap + 0.8372093f;
