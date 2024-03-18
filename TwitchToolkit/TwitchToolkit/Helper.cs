@@ -478,7 +478,7 @@ public static class Helper
         Map map = AnyPlayerMap;
         for (int i = 0; i < count; i++)
         {
-            if (!GetRandomVec3(ThingDefOf.Tornado, map, out var loc, 30))
+            if (!GetRandomVec3(ThingDef.Named("Tornado"), map, out var loc, 30))
             {
                 return;
             }

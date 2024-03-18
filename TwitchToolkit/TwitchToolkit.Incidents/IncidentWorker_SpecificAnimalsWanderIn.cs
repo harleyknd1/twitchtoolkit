@@ -97,7 +97,9 @@ public class IncidentWorker_SpecificAnimalsWanderIn : IncidentWorker
 			}
 			if (Manhunter)
 			{
-				pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.Manhunter, (string)null, false, false, (Pawn)null, false, false, false);
+				pawn.mindState.mentalStateHandler.TryStartMentalState(
+					stateDef: MentalStateDefOf.Manhunter
+					);
 			}
 		}
 		TaggedString text = TranslatorFormattedStringExtensions.Translate("LetterFarmAnimalsWanderIn", (NamedArgument)(PawnKindDef.GetLabelPlural(-1)));

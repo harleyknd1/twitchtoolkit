@@ -1,3 +1,4 @@
+using RimWorld;
 using ToolkitCore;
 using TwitchLib.Client.Models.Interfaces;
 using TwitchToolkit.Utilities;
@@ -39,6 +40,20 @@ public class MessageInterface : TwitchInterfaceBase
 
             }
 		}
+		else if (twitchMessage.Message.ToLower() == "!credz")
+        {
+            switch (twitchMessage.Username.ToLower())
+            {
+				case "hodlhodl":
+                case "saschahi":
+				case "sirrandoo":
+				case "nry_chan":
+                    string text = "If you're reading this letter it means one of the TTK devs has visited your stream.\r\n Keep up the good stream and remember to have fun!";
+                    Find.LetterStack.ReceiveLetter((TaggedString)("TTK Dev visited!"), (TaggedString)(text), LetterDefOf.PositiveEvent);
+                    break;
+            }
+            
+        }
 		if (!ToolkitCoreSettings.forceWhispers || twitchMessage.WhisperMessage != null)
 		{
 			if (Helper.ModActive)

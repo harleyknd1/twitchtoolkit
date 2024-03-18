@@ -33,12 +33,12 @@ public class ReviveRandomPawn : IncidentHelper
             Thing thing;
             if (this.pawn.SpawnedParentOrMe != this.pawn.Corpse && this.pawn.SpawnedParentOrMe is Pawn spawnedParentOrMe && !spawnedParentOrMe.carryTracker.TryDropCarriedThing(spawnedParentOrMe.Position, ThingPlaceMode.Near, out thing, (Action<Thing, int>)null))
             {
-                Log.Error(string.Format("Submit this bug to TwitchToolkit Discord: Could not drop {0} at {1} from {2}", (object)this.pawn, (object)spawnedParentOrMe.Position, (object)spawnedParentOrMe), false);
+                Log.Error(string.Format("Submit this bug to TwitchToolkit Discord: Could not drop {0} at {1} from {2}", (object)this.pawn, (object)spawnedParentOrMe.Position, (object)spawnedParentOrMe));
             }
             else
             {
                 this.pawn.ClearAllReservations();
-                ResurrectionUtility.ResurrectWithSideEffects(this.pawn);
+                ResurrectionUtility.TryResurrectWithSideEffects(this.pawn);
                 PawnTracker.pawnsToRevive.Remove(this.pawn);
                 Find.LetterStack.ReceiveLetter("Pawn Revived", string.Format("{0} has been revived but is experiencing some side effects.", (object)this.pawn.Name), LetterDefOf.PositiveEvent, (LookTargets)(Thing)this.pawn, (Faction)null);
             }

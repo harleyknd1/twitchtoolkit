@@ -50,7 +50,7 @@ public class Tornado : VotingHelper
 
 	public override void TryExecute()
 	{
-		Tornado tornado = (Tornado)GenSpawn.Spawn(ThingDefOf.Tornado, loc, map, (WipeMode)0);
+		Tornado tornado = (Tornado)GenSpawn.Spawn(ThingDef.Named("Tornado"), loc, map, (WipeMode)0);
 		string text = "A  mobile, destructive vortex of violently rotating winds have appeard. Seek safe shelter!";
 		Find.LetterStack.ReceiveLetter((TaggedString)("Tornado"), (TaggedString)(text), LetterDefOf.NegativeEvent, (LookTargets)((Thing)(object)tornado), (Faction)null, (Quest)null, (List<ThingDef>)null, (string)null);
 	}

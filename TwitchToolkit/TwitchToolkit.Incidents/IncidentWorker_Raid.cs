@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LudeonTK;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -40,7 +41,7 @@ public abstract class IncidentWorker_Raid : IncidentWorker_PawnsArrive
 			}
 			else if (!GenCollection.TryRandomElementByWeight<PawnsArrivalModeDef>(parms.raidStrategy.arriveModes.Where((PawnsArrivalModeDef x) => x.Worker.CanUseWith(parms)), (Func<PawnsArrivalModeDef, float>)((PawnsArrivalModeDef x) => x.Worker.GetSelectionWeight(parms)), out parms.raidArrivalMode))
 			{
-				Log.Error("Could not resolve arrival mode for raid. Defaulting to EdgeWalkIn. parms=" + parms, false);
+				Log.Error("Could not resolve arrival mode for raid. Defaulting to EdgeWalkIn. parms=" + parms);
 				parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;
 			}
 		}
@@ -102,7 +103,7 @@ public abstract class IncidentWorker_Raid : IncidentWorker_PawnsArrive
 		}
 		if (list.Count == 0)
 		{
-			Log.Error("Got no pawns spawning raid from parms " + parms, false);
+			Log.Error("Got no pawns spawning raid from parms " + parms);
 			return false;
 		}
 		parms.raidArrivalMode.Worker.Arrive(list, parms);

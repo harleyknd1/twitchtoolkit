@@ -66,7 +66,7 @@ public class StorytellerComp_CustomOnOffCycle : StorytellerComp
 					where parms.points >= def.minThreatPoints
 					select def;
 				Helper.Log($"Trying OFC Category: ${Props.IncidentCategory}");
-				if (GenCollection.TryRandomElementByWeight<IncidentDef>(options, (Func<IncidentDef, float>)base.IncidentChanceFinal, out def2))
+                if (GenCollection.TryRandomElementByWeight<IncidentDef>(options, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out def2))
 				{
 					if (options.Count() > 1)
 					{
@@ -75,7 +75,7 @@ public class StorytellerComp_CustomOnOffCycle : StorytellerComp
 						IncidentDef picked = default(IncidentDef);
 						for (int x = 0; x < ToolkitSettings.VoteOptions - 1 && x < options.Count(); x++)
 						{
-							GenCollection.TryRandomElementByWeight<IncidentDef>(options, (Func<IncidentDef, float>)base.IncidentChanceFinal, out picked);
+							GenCollection.TryRandomElementByWeight<IncidentDef>(options, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out picked);
 							if (picked != null)
 							{
 								options = options.Where((IncidentDef k) => k != picked);

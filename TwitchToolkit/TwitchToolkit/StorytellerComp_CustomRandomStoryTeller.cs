@@ -88,10 +88,8 @@ public class StorytellerComp_CustomRandomStoryTeller : StorytellerComp
 			IncidentParms parms = ((StorytellerComp)this).GenerateParms(category, incidentTarget);
 			Helper.Log($"Trying Category {category}");
 			parms = ((StorytellerComp)this).GenerateParms(category, incidentTarget);
-			IEnumerable<IncidentDef> options2 = from d in UsableIncidentsInCategory(category, parms)
-				where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
-				select d;
-			if (!GenCollection.TryRandomElementByWeight<IncidentDef>(options2, (Func<IncidentDef, float>)base.IncidentChanceFinal, out incDef))
+			var options2 = UsableIncidentsInCategory(category, parms).Where(d => !d.pointsScaleable || parms.points >= d.minThreatPoints);
+			if (!GenCollection.TryRandomElementByWeight<IncidentDef>(options2, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out incDef))
 			{
 				triedCategories.Add(category);
 				if (triedCategories.Count >= Props.categoryWeights.Count)
@@ -108,7 +106,7 @@ public class StorytellerComp_CustomRandomStoryTeller : StorytellerComp
 				pickedoptions.Add(incDef);
 				for (int x = 0; x < ToolkitSettings.VoteOptions - 1 && x < options2.Count(); x++)
 				{
-					GenCollection.TryRandomElementByWeight<IncidentDef>(options2, (Func<IncidentDef, float>)base.IncidentChanceFinal, out picked);
+					GenCollection.TryRandomElementByWeight<IncidentDef>(options2, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out picked);
 					if (picked != null)
 					{
 						options2 = options2.Where((IncidentDef k) => k != picked);
@@ -171,11 +169,9 @@ public class StorytellerComp_CustomRandomStoryTeller : StorytellerComp
 		IncidentParms parms = ((StorytellerComp)this).GenerateParms(category, target);
 		Helper.Log($"Trying Category{category}");
 		parms = ((StorytellerComp)this).GenerateParms(category, target);
-		IEnumerable<IncidentDef> options = from d in UsableIncidentsInCategory(category, parms)
-			where !d.NeedsParmsPoints || parms.points >= d.minThreatPoints
-			select d;
+		var options = UsableIncidentsInCategory(category, parms).Where(d => !d.pointsScaleable || parms.points >= d.minThreatPoints);
 		IncidentDef incDef = default(IncidentDef);
-		if (GenCollection.TryRandomElementByWeight<IncidentDef>(options, (Func<IncidentDef, float>)base.IncidentChanceFinal, out incDef))
+		if (GenCollection.TryRandomElementByWeight<IncidentDef>(options, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out incDef))
 		{
 		}
 		triedCategories.Add(category);
@@ -192,7 +188,7 @@ public class StorytellerComp_CustomRandomStoryTeller : StorytellerComp
 		IncidentDef picked = default(IncidentDef);
 		for (int x = 0; x < ToolkitSettings.VoteOptions - 1 && x < options.Count(); x++)
 		{
-			GenCollection.TryRandomElementByWeight<IncidentDef>(options, (Func<IncidentDef, float>)base.IncidentChanceFinal, out picked);
+			GenCollection.TryRandomElementByWeight<IncidentDef>(options, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out picked);
 			if (picked != null)
 			{
 				options = options.Where((IncidentDef k) => k != picked);

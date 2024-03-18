@@ -76,7 +76,7 @@ public class IncidentWorker_CallForAid : IncidentWorker_RaidFriendly
 			list = PawnGroupMakerUtility.GeneratePawns(IncidentParmsUtility.GetDefaultPawnGroupMakerParms(combat, parms, false), true).ToList();
 			if (list.Count == 0)
 			{
-				Log.Error("Got no pawns spawning raid from parms " + parms, false);
+				Log.Error($"Got no pawns spawning raid from parms {parms}");
 				return false;
 			}
 			parms.raidArrivalMode.Worker.Arrive(list, parms);

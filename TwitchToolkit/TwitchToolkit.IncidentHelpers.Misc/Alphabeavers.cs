@@ -13,7 +13,7 @@ public class Alphabeavers : IncidentHelper
 
 	public override bool IsPossible()
 	{
-		worker = new IncidentWorker_Alphabeavers();
+		worker = new RimWorld.IncidentWorker_Alphabeavers();
 		worker.def = IncidentDef.Named("Alphabeavers");
 		Map map = Helper.AnyPlayerMap;
 		if (map != null)

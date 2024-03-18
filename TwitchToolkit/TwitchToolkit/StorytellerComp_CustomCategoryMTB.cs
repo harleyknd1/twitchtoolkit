@@ -31,7 +31,7 @@ public class StorytellerComp_CustomCategoryMTB : StorytellerComp
 		IEnumerable<IncidentDef> options2 = UsableIncidentsInCategory(Props.category, parms);
 		Helper.Log("Trying to create events");
 		IncidentDef selectedDef = default(IncidentDef);
-		if (!GenCollection.TryRandomElementByWeight<IncidentDef>(options2, (Func<IncidentDef, float>)base.IncidentChanceFinal, out selectedDef))
+		if (!GenCollection.TryRandomElementByWeight<IncidentDef>(options2, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out selectedDef))
 		{
 			yield break;
 		}
@@ -42,7 +42,7 @@ public class StorytellerComp_CustomCategoryMTB : StorytellerComp
 			IncidentDef picked = default(IncidentDef);
 			for (int x = 0; x < ToolkitSettings.VoteOptions - 1 && x < options2.Count(); x++)
 			{
-				GenCollection.TryRandomElementByWeight<IncidentDef>(options2, (Func<IncidentDef, float>)base.IncidentChanceFinal, out picked);
+				GenCollection.TryRandomElementByWeight<IncidentDef>(options2, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out picked);
 				if (picked != null)
 				{
 					options2 = options2.Where((IncidentDef k) => k != picked);

@@ -113,7 +113,7 @@ public static class Store_ItemEditor
 			if (search == null || search.Count() < 1)
 			{
 				finalCount--;
-				Log.Message($"Skipping Item: {allItems[i].defname} i: {i} finalCount: {finalCount}", true);
+				Log.Message($"Skipping Item: {allItems[i].defname} i: {i} finalCount: {finalCount}");
 				continue;
 			}
 			ThingDef thing = search.ElementAt(0);

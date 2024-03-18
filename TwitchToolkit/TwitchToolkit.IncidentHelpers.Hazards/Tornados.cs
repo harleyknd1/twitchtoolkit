@@ -14,7 +14,7 @@ public class Tornados : Tornado
 		while (CellFinder.TryFindRandomCellInsideWith(cellRect, ((IntVec3 x) => CanSpawnTornadoAt(x, map)), out loc) && count < 3)
 		{
 			count++;
-			Tornado tornado = (Tornado)GenSpawn.Spawn(ThingDefOf.Tornado, loc, map);
+			Tornado tornado = (Tornado)GenSpawn.Spawn(ThingDef.Named("Tornado"), loc, map);
 			tornados.Add((Thing)(object)tornado);
 		}
 		string text = "A  mobile, destructive vortex of violently rotating winds have appeard. Seek safe shelter!";
