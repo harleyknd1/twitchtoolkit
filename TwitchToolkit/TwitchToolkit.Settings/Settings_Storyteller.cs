@@ -97,19 +97,19 @@ public static class Settings_Storyteller
 		//IL_0097: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_00b3: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_00cf: Unknown result type (might be due to invalid IL or missing erences)
-		optionsListing.Label("All", -1f, (string)null);
-		((Listing)optionsListing).GapLine(12f);
-		optionsListing.SliderLabeled((TaggedString)(Translator.Translate("TwitchToolkitVoteTime")),  ToolkitSettings.VoteTime, Math.Round((double)ToolkitSettings.VoteTime).ToString(), 1f, 15f);
-		optionsListing.SliderLabeled((TaggedString)(Translator.Translate("TwitchToolkitVoteOptions")),  ToolkitSettings.VoteOptions, Math.Round((double)ToolkitSettings.VoteOptions).ToString(), 2f, 5f);
-		optionsListing.CheckboxLabeled((TaggedString)(Translator.Translate("TwitchToolkitVotingChatMsgs")), ref ToolkitSettings.VotingChatMsgs, (string)null);
-		optionsListing.CheckboxLabeled((TaggedString)(Translator.Translate("TwitchToolkitVotingWindow")), ref ToolkitSettings.VotingWindow, (string)null);
-		optionsListing.CheckboxLabeled((TaggedString)(Translator.Translate("TwitchToolkitLargeVotingWindow")), ref ToolkitSettings.LargeVotingWindow, (string)null);
-		((Listing)optionsListing).Gap(12f);
+		optionsListing.Label("All", -1f, null);
+		optionsListing.GapLine(12f);
+		optionsListing.SliderLabeled("TwitchToolkitVoteTime".Translate(), ref ToolkitSettings.VoteTime, Math.Round((double)ToolkitSettings.VoteTime).ToString(), 1f, 15f);
+		optionsListing.SliderLabeled("TwitchToolkitVoteOptions".Translate(), ref ToolkitSettings.VoteOptions, Math.Round((double)ToolkitSettings.VoteOptions).ToString(), 2f, 5f);
+		optionsListing.CheckboxLabeled("TwitchToolkitVotingChatMsgs".Translate(), ref ToolkitSettings.VotingChatMsgs, null);
+		optionsListing.CheckboxLabeled("TwitchToolkitVotingWindow".Translate(), ref ToolkitSettings.VotingWindow, null);
+		optionsListing.CheckboxLabeled("TwitchToolkitLargeVotingWindow".Translate(), ref ToolkitSettings.LargeVotingWindow, null);
+		optionsListing.Gap(12f);
 		if (optionsListing.ButtonTextLabeled("Edit Storyteller Packs", "Storyteller Packs"))
 		{
 			Window_StorytellerPacks window = new Window_StorytellerPacks();
-			Find.WindowStack.TryRemove(((object)window).GetType(), true);
-			Find.WindowStack.Add((Window)(object)window);
+			Find.WindowStack.TryRemove(window.GetType(), true);
+			Find.WindowStack.Add(window);
 		}
 	}
 }

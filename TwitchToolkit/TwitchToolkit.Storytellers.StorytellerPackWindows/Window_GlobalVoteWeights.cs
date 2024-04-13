@@ -41,7 +41,7 @@ public class Window_GlobalVoteWeights : Window
 			{
 				int index = ((Def)vote).index;
 				float percentage = (float)Math.Round((float)vote.voteWeight / (float)totalWeights * 100f, 2);
-				listing.SliderLabeled(((Def)vote).defName + " - " + percentage + "%",  vote.voteWeight, vote.voteWeight.ToString());
+				listing.SliderLabeled(((Def)vote).defName + " - " + percentage + "%", ref vote.voteWeight, vote.voteWeight.ToString());
 				ToolkitSettings.VoteWeights[((Def)vote).defName] = vote.voteWeight;
 				newWeights += vote.voteWeight;
 				((Listing)listing).Gap(6f);
