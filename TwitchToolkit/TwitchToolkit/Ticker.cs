@@ -107,7 +107,7 @@ public class Ticker : Thing
 		}
 	}
 
-	public override void Tick()
+    protected override void Tick()
 	{
 		//IL_0191: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_0198: Expected O, but got Unknown

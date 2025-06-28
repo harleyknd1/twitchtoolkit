@@ -23,22 +23,15 @@ public class IncidentWorker_CallForAid : IncidentWorker_RaidFriendly
 		{
 			return true;
 		}
-		if (!CandidateFactions(map, desperate: true).Any())
+		if (!CandidateFactions(parms, desperate: true).Any())
 		{
 			return false;
 		}
-		parms.faction = GenCollection.RandomElementByWeight<Faction>(CandidateFactions(map, desperate: true), (Func<Faction, float>)((Faction fac) => (float)fac.PlayerGoodwill + 120.000008f));
+		parms.faction = GenCollection.RandomElementByWeight<Faction>(CandidateFactions(parms, desperate: true), (Func<Faction, float>)((Faction fac) => (float)fac.PlayerGoodwill + 120.000008f));
 		return true;
 	}
 
-	protected IEnumerable<Faction> CandidateFactions(Map map, bool desperate = false)
-	{
-		return from f in Find.FactionManager.AllFactions
-			where FactionCanBeGroupSource(f, map, desperate)
-			select f;
-	}
-
-	protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = true)
+	public override bool FactionCanBeGroupSource(Faction f, IncidentParms parms, bool desperate = true)
 	{
 		//IL_0029: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_002f: Invalid comparison between Unknown and I4

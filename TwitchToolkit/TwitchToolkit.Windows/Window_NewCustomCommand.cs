@@ -31,7 +31,7 @@ public class Window_NewCustomCommand : Window
 		{
 			TrySubmitNewCommand();
 		}
-		listing.Label(output, -1f, (string)null);
+		listing.Label(output);
 		if (outputFrames > 0)
 		{
 			outputFrames--;

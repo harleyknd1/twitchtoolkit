@@ -64,7 +64,7 @@ public class StoreIncidentEditor : Window
 		}
 		Listing_Standard ls = new Listing_Standard();
 		((Listing)ls).Begin(inRect);
-		ls.Label(GenText.CapitalizeFirst(((Def)storeIncident).label), -1f, (string)null);
+		ls.Label(GenText.CapitalizeFirst(((Def)storeIncident).label));
 		((Listing)ls).Gap(12f);
 		if (storeIncident.cost > 0)
 		{

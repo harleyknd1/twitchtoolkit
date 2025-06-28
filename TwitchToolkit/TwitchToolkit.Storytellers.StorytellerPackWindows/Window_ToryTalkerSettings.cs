@@ -21,11 +21,11 @@ public class Window_ToryTalkerSettings : Window
 		Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
 		Text.Font = ((GameFont)2);
-		listing.Label("<color=#6441A4>ToryTalker</color> Settings", -1f, (string)null);
+		listing.Label("<color=#6441A4>ToryTalker</color> Settings");
 		Text.Font =((GameFont)1);
 		((Listing)listing).Gap(12f);
 		((Listing)listing).GapLine(12f);
-		listing.Label("Tory Talker uses the global weights and it's own weighting system based on events that have happened recently.", -1f, (string)null);
+		listing.Label("Tory Talker uses the global weights and it's own weighting system based on events that have happened recently.");
 		((Listing)listing).Gap(12f);
 		if (listing.ButtonTextLabeled("Edit Global Vote Weights", "Edit Weights"))
 		{

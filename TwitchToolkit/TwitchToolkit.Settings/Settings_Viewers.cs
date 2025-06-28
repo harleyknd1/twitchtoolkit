@@ -20,9 +20,9 @@ public static class Settings_Viewers
 		optionsListing.AddLabeledNumericalTextField("Cost to join queue:", ref ToolkitSettings.CostToJoinQueue, 0.8f);
 		optionsListing.Gap(12f);
 		optionsListing.GapLine(12f);
-		optionsListing.Label("Special Viewers", -1f, null);
+		optionsListing.Label("Special Viewers");
 		optionsListing.Gap(12f);
-		optionsListing.Label("<color=#D9BB25>Subscribers</color>", -1f, null);
+		optionsListing.Label("<color=#D9BB25>Subscribers</color>");
 		string subExtraCoinBuffer = ToolkitSettings.SubscriberExtraCoins.ToString();
 		string subCoinMultiplierBuffer = ToolkitSettings.SubscriberCoinMultiplier.ToString();
 		string subExtraVotesBuffer = ToolkitSettings.SubscriberExtraVotes.ToString();
@@ -30,7 +30,7 @@ public static class Settings_Viewers
 		optionsListing.TextFieldNumericLabeled<float>("Coin bonus multiplier", ref ToolkitSettings.SubscriberCoinMultiplier, ref subCoinMultiplierBuffer, 1f, 5f);
 		optionsListing.TextFieldNumericLabeled<int>("Extra votes", ref ToolkitSettings.SubscriberExtraVotes, ref subExtraVotesBuffer, 0f, 100f);
 		optionsListing.Gap(12f);
-		optionsListing.Label("<color=#5F49F2>VIPs</color>", -1f, null);
+		optionsListing.Label("<color=#5F49F2>VIPs</color>");
 		string vipExtraCoinBuffer = ToolkitSettings.VIPExtraCoins.ToString();
 		string vipCoinMultiplierBuffer = ToolkitSettings.VIPCoinMultiplier.ToString();
 		string vipExtraVotesBuffer = ToolkitSettings.VIPExtraVotes.ToString();
@@ -38,7 +38,7 @@ public static class Settings_Viewers
 		optionsListing.TextFieldNumericLabeled<float>("Coin bonus multiplier", ref ToolkitSettings.VIPCoinMultiplier, ref vipCoinMultiplierBuffer, 1f, 5f);
 		optionsListing.TextFieldNumericLabeled<int>("Extra votes", ref ToolkitSettings.VIPExtraVotes, ref vipExtraVotesBuffer, 0f, 100f);
 		optionsListing.Gap(12f);
-		optionsListing.Label("<color=#238C48>Mods</color>", -1f, null);
+		optionsListing.Label("<color=#238C48>Mods</color>");
 		string modExtraCoinBuffer = ToolkitSettings.ModExtraCoins.ToString();
 		string modCoinMultiplierBuffer = ToolkitSettings.ModCoinMultiplier.ToString();
 		string modExtraVotesBuffer = ToolkitSettings.ModExtraVotes.ToString();

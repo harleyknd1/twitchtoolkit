@@ -211,7 +211,7 @@ public static class Helper
     public static bool GetRandomVec3(ThingDef thing, Map map, out IntVec3 vec, int contract = 0)
     {
         //IL_0006: Unknown result type (might be due to invalid IL or missing references)
-        return CellFinderLoose.TryFindSkyfallerCell(thing, map, out vec, contract, map.Center, 99999, true, false, false, true, true, false, (Predicate<IntVec3>)null);
+        return CellFinderLoose.TryFindSkyfallerCell(thing, map, TerrainAffordanceDefOf.Walkable, out vec, contract, map.Center, 99999, true, false, false, true, true, false, (Predicate<IntVec3>)null);
     }
 
     public static void Weather(string quote, WeatherDef weather, LetterDef type)
@@ -427,7 +427,7 @@ public static class Helper
         //IL_002e: Unknown result type (might be due to invalid IL or missing references)
         //IL_0034: Unknown result type (might be due to invalid IL or missing references)
         int maxMineables = ThingSetMaker_Meteorite.MineablesCountRange.max;
-        return CellFinderLoose.TryFindSkyfallerCell(ThingDefOf.MeteoriteIncoming, map, out cell, 10, default(IntVec3), -1, true, false, false, false, true, true, (Predicate<IntVec3>)delegate (IntVec3 x)
+        return CellFinderLoose.TryFindSkyfallerCell(ThingDefOf.MeteoriteIncoming, map, TerrainAffordanceDefOf.Walkable, out cell, 10, default(IntVec3), -1, true, false, false, false, true, true, (Predicate<IntVec3>)delegate (IntVec3 x)
         {
             //IL_0015: Unknown result type (might be due to invalid IL or missing references)
             //IL_0018: Unknown result type (might be due to invalid IL or missing references)
@@ -439,14 +439,13 @@ public static class Helper
             int num = Mathf.CeilToInt(Mathf.Sqrt((float)maxMineables)) + 2;
             CellRect val = CellRect.CenteredOn(x, num, num);
             int num2 = 0;
-            CellRectIterator iterator = ((CellRect)( val)).GetIterator();
-            while (!((CellRectIterator)(iterator)).Done())
+
+            foreach (IntVec3 cell in val.Cells)
             {
-                if (GenGrid.InBounds(((CellRectIterator)(iterator)).Current, map) && GenGrid.Standable(((CellRectIterator)(iterator)).Current, map))
+                if (GenGrid.InBounds(cell, map) && GenGrid.Standable(cell, map))
                 {
                     num2++;
                 }
-                ((CellRectIterator)(iterator)).MoveNext();
             }
             return num2 >= maxMineables;
         });

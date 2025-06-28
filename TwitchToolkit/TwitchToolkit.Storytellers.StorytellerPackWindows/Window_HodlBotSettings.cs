@@ -32,11 +32,11 @@ public class Window_HodlBotSettings : Window
 		Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
 		Text.Font =((GameFont)2);
-		listing.Label("<color=#4BB543>HodlBot</color> Settings", -1f, (string)null);
+		listing.Label("<color=#4BB543>HodlBot</color> Settings");
 		Text.Font =((GameFont)1);
 		((Listing)listing).Gap(12f);
 		((Listing)listing).GapLine(12f);
-		listing.Label("HodlBot chooses events from a random category or type. The chance of one of these categories/types being picked is based on weights below. Setting to 0% disables it.", -1f, (string)null);
+		listing.Label("HodlBot chooses events from a random category or type. The chance of one of these categories/types being picked is based on weights below. Setting to 0% disables it.");
 		((Listing)listing).Gap(12f);
 		string hodlbotMTBDays = Math.Truncate((double)ToolkitSettings.HodlBotMTBDays * 100.0 / 100.0).ToString();
 		listing.TextFieldNumericLabeled<float>("Average Days Between Events", ref ToolkitSettings.HodlBotMTBDays, ref hodlbotMTBDays, 0.5f, 10f);
@@ -47,7 +47,7 @@ public class Window_HodlBotSettings : Window
 			Settings_Storyteller.NewVoteTypeWeightsHodlBot();
 		}
 		((Listing)listing).Gap(12f);
-		listing.Label("Random Category Weights", -1f, (string)null);
+		listing.Label("Random Category Weights");
 		((Listing)listing).Gap(12f);
 		List<string> VoteCategoryList = ToolkitSettings.VoteCategoryWeights.Keys.ToList();
 		List<float> VoteCategoryFloatList = ToolkitSettings.VoteCategoryWeights.Values.ToList();
@@ -63,7 +63,7 @@ public class Window_HodlBotSettings : Window
 		}
 		totalWeightsForCategories = newWeights;
 		((Listing)listing).Gap(12f);
-		listing.Label("Random Type Weights", -1f, (string)null);
+		listing.Label("Random Type Weights");
 		((Listing)listing).Gap(12f);
 		List<string> VoteTypeList = ToolkitSettings.VoteTypeWeights.Keys.ToList();
 		List<float> VoteTypeFloatList = ToolkitSettings.VoteTypeWeights.Values.ToList();

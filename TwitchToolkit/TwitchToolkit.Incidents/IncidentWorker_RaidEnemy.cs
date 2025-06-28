@@ -8,9 +8,9 @@ namespace TwitchToolkit.Incidents;
 
 public class IncidentWorker_RaidEnemy : IncidentWorker_Raid
 {
-	protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
+    public override bool FactionCanBeGroupSource(Faction f, IncidentParms parms, bool desperate = false)
 	{
-		return FactionCanBeGroupSource(f, map, desperate) && FactionUtility.HostileTo(f, Faction.OfPlayer) && (desperate || (float)GenDate.DaysPassed >= f.def.earliestRaidDays);
+		return base.FactionCanBeGroupSource(f, parms, desperate) && f.HostileTo(Faction.OfPlayer) && (desperate || (float)GenDate.DaysPassed >= f.def.earliestRaidDays);
 	}
 
 	protected override bool TryExecuteWorker(IncidentParms parms)
@@ -39,7 +39,7 @@ public class IncidentWorker_RaidEnemy : IncidentWorker_Raid
 		{
 			num = 999999f;
 		}
-		return PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, map, false)), true, true, true, true) || PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, map, true)), true, true, true, true);
+		return PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, parms, false)), true, true, true, true) || PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, parms, true)), true, true, true, true);
 	}
 
 	protected override void ResolveRaidPoints(IncidentParms parms)
