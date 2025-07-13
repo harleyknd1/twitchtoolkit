@@ -13,7 +13,7 @@ public class ManhunterPack : VotingHelper
 	{
 		//IL_0002: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_000c: Expected O, but got Unknown
-		worker = (IncidentWorker)new IncidentWorker_ManhunterPack();
+		worker = (IncidentWorker)new IncidentWorker_Ambush_ManhunterPack();
 		worker.def = IncidentDefOf.RaidEnemy;
 		parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, target);
 		return worker.CanFireNow(parms);

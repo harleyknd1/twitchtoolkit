@@ -54,8 +54,8 @@ public class SpawnAnimal : IncidentHelperVariables
 		}
 		float points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, StorytellerUtility.DefaultThreatPointsNow(target));
 		pawnKind = allAnimals[0];
-		int num = ManhunterPackIncidentUtility.GetAnimalsCount(pawnKind, points);
-		worker = (IncidentWorker)(object)new IncidentWorker_SpecificAnimalsWanderIn(null, pawnKind, joinColony: true, num, manhunter: false, defaultText: true);
+		//int num = ManhunterPackIncidentUtility.GetAnimalsCount(pawnKind, points);
+		worker = (IncidentWorker)(object)new IncidentWorker_SpecificAnimalsWanderIn(null, pawnKind, joinColony: true, allAnimals.Count, manhunter: false, defaultText: true);
 		worker.def = IncidentDef.Named("FarmAnimalsWanderIn");
 		float defaultThreatPoints = StorytellerUtility.DefaultSiteThreatPointsNow();
 		parms = StorytellerUtility.DefaultParmsNow(worker.def.category, target);

@@ -64,25 +64,25 @@ public class StoreIncidentEditor : Window
 		}
 		Listing_Standard ls = new Listing_Standard();
 		((Listing)ls).Begin(inRect);
-		ls.Label(GenText.CapitalizeFirst(((Def)storeIncident).label), -1f, (string)null);
+		ls.Label(GenText.CapitalizeFirst(((Def)storeIncident).label));
 		((Listing)ls).Gap(12f);
 		if (storeIncident.cost > 0)
 		{
 			storeIncident.abbreviation = ls.TextEntryLabeled("Purchase Code:", storeIncident.abbreviation, 1);
 			((Listing)ls).Gap(12f);
-			ls.AddLabeledNumericalTextField("Cost",  storeIncident.cost);
-			ls.SliderLabeled("Max times per " + ToolkitSettings.EventCooldownInterval + " ingame day(s)",  storeIncident.eventCap, storeIncident.eventCap.ToString(), 0f, 15f);
+			ls.AddLabeledNumericalTextField("Cost", ref storeIncident.cost);
+			ls.SliderLabeled("Max times per " + ToolkitSettings.EventCooldownInterval + " ingame day(s)", ref storeIncident.eventCap, storeIncident.eventCap.ToString(), 0f, 15f);
 			if (variableIncident && storeIncidentVariables.maxWager > 0)
 			{
 				((Listing)ls).Gap(12f);
-				ls.SliderLabeled("Maximum coin wager",  storeIncidentVariables.maxWager, storeIncidentVariables.cost.ToString(), storeIncident.cost, 20000f);
+				ls.SliderLabeled("Maximum coin wager",  ref storeIncidentVariables.maxWager, storeIncidentVariables.cost.ToString(), storeIncident.cost, 20000f);
 				if (storeIncidentVariables.maxWager < storeIncidentVariables.cost)
 				{
 					storeIncidentVariables.maxWager = storeIncidentVariables.cost * 2;
 				}
 			}
 			((Listing)ls).Gap(12f);
-			ls.AddLabeledRadioList("Karma Type", karmaTypeStrings,  setKarmaType);
+			ls.AddLabeledRadioList("Karma Type", karmaTypeStrings, ref setKarmaType);
 			storeIncident.karmaType = (KarmaType)Enum.Parse(typeof(KarmaType), setKarmaType);
 			((Listing)ls).Gap(12f);
 			if (ls.ButtonTextLabeled("Disable Store Incident", "Disable"))
@@ -93,7 +93,7 @@ public class StoreIncidentEditor : Window
 		((Listing)ls).Gap(12f);
 		if (((Def)storeIncident).defName == "Item")
 		{
-			ls.SliderLabeled("Max times per " + ToolkitSettings.EventCooldownInterval + " ingame day(s)",  storeIncident.eventCap, storeIncident.eventCap.ToString(), 0f, 15f);
+			ls.SliderLabeled("Max times per " + ToolkitSettings.EventCooldownInterval + " ingame day(s)", ref storeIncident.eventCap, storeIncident.eventCap.ToString(), 0f, 15f);
 			((Listing)ls).Gap(12f);
 		}
 		if (variableIncident && storeIncidentVariables.customSettings)

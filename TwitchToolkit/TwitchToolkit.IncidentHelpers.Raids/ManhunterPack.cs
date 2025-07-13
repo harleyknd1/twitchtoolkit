@@ -42,7 +42,7 @@ public class ManhunterPack : IncidentHelperVariables
 		}
 		parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatSmall, target);
 		parms.points = IncidentHelper_PointsHelper.RollProportionalGamePoints(storeIncident, pointsWager, parms.points);
-		worker = (IncidentWorker)new IncidentWorker_ManhunterPack();
+		worker = (IncidentWorker)new IncidentWorker_Ambush_ManhunterPack();
 		worker.def = IncidentDefOf.RaidEnemy;
 		return worker.CanFireNow(parms);
 	}

@@ -68,7 +68,7 @@ public class StorytellerComp_ToolkitOnOffCycle : StorytellerComp
 		{
 			if ((from def in UsableIncidentsInCategory(Props.IncidentCategory, parms)
 				where parms.points >= def.minThreatPoints && !defs.Contains(def)
-				select def).TryChooseRandomElementByWeight((Func<IncidentDef, float>)base.IncidentChanceFinal, out IncidentDef def2))
+				select def).TryChooseRandomElementByWeight(((IncidentDef x) => x.Worker.BaseChanceThisGame), out IncidentDef def2))
 			{
 				defs.Add(def2);
 			}

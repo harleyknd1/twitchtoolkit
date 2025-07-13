@@ -19,7 +19,7 @@ public class IncidentWorker_Quote : IncidentWorker
 		//IL_0082: Unknown result type (might be due to invalid IL or missing erences)
 		if (GenText.NullOrEmpty(base.def.letterLabel) || GenText.NullOrEmpty(base.def.letterText))
 		{
-			Log.Error("Sending standard incident letter with no label or text.", false);
+			Log.Error("Sending standard incident letter with no label or text.");
 		}
 		string text = base.def.letterText;
 		if (Quote != null)
@@ -36,7 +36,7 @@ public class IncidentWorker_Quote : IncidentWorker
 		//IL_008f: Unknown result type (might be due to invalid IL or missing erences)
 		if (GenText.NullOrEmpty(base.def.letterLabel) || GenText.NullOrEmpty(base.def.letterText))
 		{
-			Log.Error("Sending standard incident letter with no label or text.", false);
+			Log.Error("Sending standard incident letter with no label or text.");
 		}
 		string text = GenText.CapitalizeFirst(string.Format(base.def.letterText, textArgs));
 		if (Quote != null)

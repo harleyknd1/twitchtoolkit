@@ -43,14 +43,14 @@ internal static class SettingsHelper
 		}
 	}
 
-	public static void SliderLabeled(this Listing_Standard ls, string label,  int val, string format, float min = 0f, float max = 100f, string tooltip = null)
+	public static void SliderLabeled(this Listing_Standard ls, string label, ref int val, string format, float min = 0f, float max = 100f, string tooltip = null)
 	{
 		float fVal = val;
-		ls.SliderLabeled(label,  fVal, format, min, max);
+		ls.SliderLabeled(label, ref fVal, format, min, max);
 		val = (int)fVal;
 	}
 
-	public static void SliderLabeled(this Listing_Standard ls, string label,  float val, string format, float min = 0f, float max = 1f, string tooltip = null)
+	public static void SliderLabeled(this Listing_Standard ls, string label, ref float val, string format, float min = 0f, float max = 1f, string tooltip = null)
 	{
 		//IL_0007: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_000c: Unknown result type (might be due to invalid IL or missing erences)
@@ -95,7 +95,7 @@ internal static class SettingsHelper
 		((Listing)ls).Gap(((Listing)ls).verticalSpacing);
 	}
 
-	public static void FloatRange(this Listing_Standard ls, string label,  FloatRange range, float min = 0f, float max = 1f, string tooltip = null, ToStringStyle valueStyle = ToStringStyle.FloatTwo)
+	public static void FloatRange(this Listing_Standard ls, string label, ref FloatRange range, float min = 0f, float max = 1f, string tooltip = null, ToStringStyle valueStyle = ToStringStyle.FloatTwo)
 	{
 		//IL_0007: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_000c: Unknown result type (might be due to invalid IL or missing erences)
@@ -155,17 +155,17 @@ internal static class SettingsHelper
 		return ((Listing)listing_Standard).GetRect(height ?? Text.LineHeight);
 	}
 
-	public static void AddLabeledRadioList(this Listing_Standard listing_Standard, string header, string[] labels,  string val, float? headerHeight = null)
+	public static void AddLabeledRadioList(this Listing_Standard listing_Standard, string header, string[] labels, ref string val, float? headerHeight = null)
 	{
 		//IL_0014: Unknown result type (might be due to invalid IL or missing erences)
 		if (header != string.Empty)
 		{
 			Widgets.Label(listing_Standard.GetRect(headerHeight), header);
 		}
-		listing_Standard.AddRadioList(GenerateLabeledRadioValues(labels), val);
+		listing_Standard.AddRadioList(GenerateLabeledRadioValues(labels), ref val);
 	}
 
-	private static void AddRadioList<T>(this Listing_Standard listing_Standard, List<LabeledRadioValue<T>> items,  T val, float? height = null)
+	private static void AddRadioList<T>(this Listing_Standard listing_Standard, List<LabeledRadioValue<T>> items, ref T val, float? height = null)
 	{
 		//IL_0016: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_001b: Unknown result type (might be due to invalid IL or missing erences)
@@ -190,7 +190,7 @@ internal static class SettingsHelper
 		return list;
 	}
 
-	public static void AddLabeledTextField(this Listing_Standard listing_Standard, string label,  string settingsValue, float leftPartPct = 0.5f)
+	public static void AddLabeledTextField(this Listing_Standard listing_Standard, string label, ref string settingsValue, float leftPartPct = 0.5f)
 	{
 		//IL_0010: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_0016: Unknown result type (might be due to invalid IL or missing erences)
@@ -201,7 +201,7 @@ internal static class SettingsHelper
 		settingsValue = Widgets.TextField(rightHalf, buffer);
 	}
 
-	public static void AddLabeledNumericalTextField<T>(this Listing_Standard listing_Standard, string label,  T settingsValue, float leftPartPct = 0.5f, float minValue = 1f, float maxValue = 100000f) where T : struct
+	public static void AddLabeledNumericalTextField<T>(this Listing_Standard listing_Standard, string label, ref T settingsValue, float leftPartPct = 0.5f, float minValue = 1f, float maxValue = 100000f) where T : struct
 	{
 		//IL_0010: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_0016: Unknown result type (might be due to invalid IL or missing erences)

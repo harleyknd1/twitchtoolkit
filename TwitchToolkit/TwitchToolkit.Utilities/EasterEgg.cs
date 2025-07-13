@@ -22,7 +22,7 @@ public static class EasterEgg
 		map.gameConditionManager.RegisterCondition((GameCondition)(object)femaleSoothe);
 		string text = "A soothing feeling rushes over your colonists. The thought of hodl will help keep your colonists mood up for the next few days.";
 		Find.LetterStack.ReceiveLetter((TaggedString)("Hodl is here"), (TaggedString)(text), LetterDefOf.PositiveEvent, (string)null);
-		SoundStarter.PlayOneShotOnCamera(SoundDefOf.OrbitalBeam, map);
+		SoundStarter.PlayOneShotOnCamera(SoundDefOf.OrbitalStrike_Ordered, map);
 	}
 
 	public static void ExecuteSaschahiEasterEgg()
@@ -57,7 +57,7 @@ public static class EasterEgg
     public static void ExecuteNryEasterEgg()
     {
         string text = "Valorous luck.  -nry";
-        Find.LetterStack.ReceiveLetter((TaggedString)("New objective: Survive."), (TaggedString)(text), LetterDefOf.PositiveEvent);
+        Find.LetterStack.ReceiveLetter((TaggedString)("Enjoy!"), (TaggedString)(text), LetterDefOf.PositiveEvent);
 
         List<Item> possibleItems = StoreInventory.items.FindAll((Item x) => x.price > 100 && x.price < 3000);
         Item randomItem = GenCollection.RandomElement(possibleItems);
@@ -84,18 +84,6 @@ public static class EasterEgg
         if (meteorite4.IsPossible())
         {
             meteorite4.TryExecute();
-        }
-
-        IncidentHelpers.Hazards.Tornados tornados = new IncidentHelpers.Hazards.Tornados(){Viewer = new Viewer("nry_chan")};
-        if (tornados.IsPossible())
-        {
-            tornados.TryExecute();
-        }
-
-        IncidentHelpers.Hazards.Tornados tornados2 = new IncidentHelpers.Hazards.Tornados() { Viewer = new Viewer("nry_chan") };
-        if (tornados2.IsPossible())
-        {
-            tornados2.TryExecute();
         }
 
         Log.Warning("reached the last portion");

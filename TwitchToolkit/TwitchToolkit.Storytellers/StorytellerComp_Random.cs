@@ -26,13 +26,11 @@ public class StorytellerComp_Random : StorytellerComp
 			incidentDefs = new List<IncidentDef>();
 			IncidentCategoryDef category = ChooseRandomCategory(target, triedCategories);
 			parms = ((StorytellerComp)this).GenerateParms(category, target);
-			IEnumerable<IncidentDef> options = from d in UsableIncidentsInCategory(category, parms)
-				where d.Worker.CanFireNow(parms) && (!d.NeedsParmsPoints || parms.points >= d.minThreatPoints)
-				select d;
+			var options = UsableIncidentsInCategory(category,parms).Where(d => d.Worker.CanFireNow(parms) && (!d.pointsScaleable || parms.points >= d.minThreatPoints));
 			int j = 0;
 			while (options.Count() > 0 && incidentDefs.Count < ToolkitSettings.VoteOptions && j < 10)
 			{
-				if (!GenCollection.TryRandomElementByWeight<IncidentDef>(options, (Func<IncidentDef, float>)base.IncidentChanceFinal, out incDef))
+				if (!GenCollection.TryRandomElementByWeight<IncidentDef>(options, ((IncidentDef x) => x.Worker.BaseChanceThisGame), out incDef))	
 				{
 					triedCategories.Add(category);
 					break;

@@ -41,7 +41,7 @@ public class Window_CommandEditor : Window
 		//IL_0209: Unknown result type (might be due to invalid IL or missing erences)
 		Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
-		listing.Label("Editing Command " + GenText.CapitalizeFirst(((Def)command).label), -1f, (string)null);
+		listing.Label("Editing Command " + GenText.CapitalizeFirst(((Def)command).label));
 		command.command = listing.TextEntryLabeled("Command - !", command.command, 1);
 		listing.CheckboxLabeled("Enabled", ref command.enabled, (string)null);
 		if (command.isCustomMessage)
@@ -73,7 +73,7 @@ public class Window_CommandEditor : Window
 			}
 			if (deleteWarning)
 			{
-				listing.Label("(Must restart for deletions to take effect)", -1f, (string)null);
+				listing.Label("(Must restart for deletions to take effect)");
 			}
 		}
 		((Listing)listing).End();

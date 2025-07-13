@@ -23,13 +23,13 @@ public class Window_Mercurius : Window
 		Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
 		Text.Font =((GameFont)2);
-		listing.Label("<color=#BF0030>Mercurius</color> Settings", -1f, (string)null);
+		listing.Label("<color=#BF0030>Mercurius</color> Settings");
 		Text.Font =((GameFont)1);
 		((Listing)listing).Gap(12f);
 		((Listing)listing).GapLine(12f);
-		listing.Label("Mercurius generates events in intervals through a cycle generator.", -1f, (string)null);
+		listing.Label("Mercurius generates events in intervals through a cycle generator.");
 		((Listing)listing).Gap(12f);
-		listing.Label("You will increasingly get more events the more days that pass.", -1f, (string)null);
+		listing.Label("You will increasingly get more events the more days that pass.");
 		((Listing)listing).End();
 	}
 }

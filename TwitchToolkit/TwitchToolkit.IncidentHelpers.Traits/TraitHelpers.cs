@@ -21,20 +21,23 @@ public static class TraitHelpers
 			where bs != null
 			select bs)
 		{
-			foreach (KeyValuePair<SkillDef, int> keyValuePair in backstory.skillGains)
+			foreach (var keyValuePair in backstory.skillGains)
 			{
-				if (keyValuePair.Key == sk)
+				if (keyValuePair.skill == sk)
 				{
-					num += (float)keyValuePair.Value * Rand.Range(1f, 1.4f);
+					num += (float)keyValuePair.amount * Rand.Range(1f, 1.4f);
 				}
 			}
 		}
 		for (int i = 0; i < pawn.story.traits.allTraits.Count; i++)
 		{
 			int num2 = 0;
-			if (pawn.story.traits.allTraits[i].CurrentData.skillGains.TryGetValue(sk, out num2))
+			var skillIndex = pawn.story.traits.allTraits[i].CurrentData.skillGains.FirstIndexOf(x => x.skill == sk);
+			if (skillIndex != -1)
 			{
-				num += (float)num2;
+				var skill = pawn.story.traits.allTraits[i].CurrentData.skillGains[skillIndex];
+
+                num += (float)skillIndex;
 			}
 		}
 		float num3 = Rand.Range(1f, AgeSkillMaxFactorCurve.Evaluate((float)pawn.ageTracker.AgeBiologicalYears));

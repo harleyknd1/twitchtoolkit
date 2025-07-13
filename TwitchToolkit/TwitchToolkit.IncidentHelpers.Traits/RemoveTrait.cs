@@ -63,10 +63,10 @@ public class RemoveTrait : IncidentHelperVariables
 		TraitDegreeData traitDegreeData = traitToRemove.def.DataAtDegree(buyableTrait.degree);
 		if (traitDegreeData != null && traitDegreeData.skillGains != null)
 		{
-			foreach (KeyValuePair<SkillDef, int> pair in traitDegreeData.skillGains)
+			foreach (var pair in traitDegreeData.skillGains)
 			{
-				SkillRecord skill = pawn.skills.GetSkill(pair.Key);
-				skill.Level = (skill.Level - pair.Value);
+				SkillRecord skill = pawn.skills.GetSkill(pair.skill);
+				skill.Level = (skill.Level - pair.amount);
 			}
 		}
 		Viewer.TakeViewerCoins(storeIncident.cost);

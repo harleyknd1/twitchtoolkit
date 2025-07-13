@@ -15,7 +15,7 @@ public class CallForAid : IncidentHelper
 	public override void TryExecute()
 	{
 		Map currentMap = Find.CurrentMap;
-		IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.AllyAssistance, (IIncidentTarget)(object)currentMap);
+		IncidentParms incidentParms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.Special, (IIncidentTarget)(object)currentMap);
 		incidentParms.forced = true;
 		incidentParms.target = (IIncidentTarget)(object)currentMap;
 		incidentParms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;

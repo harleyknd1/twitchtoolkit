@@ -32,7 +32,7 @@ public class Window_GlobalVoteWeights : Window
 		Rect viewRect = new Rect(0f, 0f, ((Rect)(outRect)).width - 20f, (float)allVotes.Count * 31f);
 		((Listing)listing).Begin(inRect);
 		listing.BeginSection(450f, 4f, 4f);
-		listing.Label("Change the weights given to votes. Setting to 0% disables it.", -1f, (string)null);
+		listing.Label("Change the weights given to votes. Setting to 0% disables it.");
 		((Listing)listing).Gap(12f);
 		if (ToolkitSettings.VoteWeights != null)
 		{
@@ -41,7 +41,7 @@ public class Window_GlobalVoteWeights : Window
 			{
 				int index = ((Def)vote).index;
 				float percentage = (float)Math.Round((float)vote.voteWeight / (float)totalWeights * 100f, 2);
-				listing.SliderLabeled(((Def)vote).defName + " - " + percentage + "%",  vote.voteWeight, vote.voteWeight.ToString());
+				listing.SliderLabeled(((Def)vote).defName + " - " + percentage + "%", ref vote.voteWeight, vote.voteWeight.ToString());
 				ToolkitSettings.VoteWeights[((Def)vote).defName] = vote.voteWeight;
 				newWeights += vote.voteWeight;
 				((Listing)listing).Gap(6f);

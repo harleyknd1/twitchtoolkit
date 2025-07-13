@@ -38,8 +38,8 @@ public class IncidentWorker_SpecificAnimalsWanderIn : IncidentWorker
 	private bool TryFindAnimalKind(int tile, out PawnKindDef animalKind)
 	{
 		return GenCollection.TryRandomElementByWeight<PawnKindDef>(from k in DefDatabase<PawnKindDef>.AllDefs
-			where k.RaceProps.Animal && k.RaceProps.wildness < 0.35f && Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, k.race)
-			select k, (Func<PawnKindDef, float>)((PawnKindDef k) => 0.420000017f - k.RaceProps.wildness), out animalKind);
+			where k.RaceProps.Animal && k.RaceProps.petness < 0.35f && Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, k.race)
+			select k, (Func<PawnKindDef, float>)((PawnKindDef k) => 0.420000017f - k.RaceProps.petness), out animalKind);
 	}
 
 	protected override bool CanFireNowSub(IncidentParms parms)
@@ -97,7 +97,9 @@ public class IncidentWorker_SpecificAnimalsWanderIn : IncidentWorker
 			}
 			if (Manhunter)
 			{
-				pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.Manhunter, (string)null, false, false, (Pawn)null, false, false, false);
+				pawn.mindState.mentalStateHandler.TryStartMentalState(
+					stateDef: MentalStateDefOf.Manhunter
+					);
 			}
 		}
 		TaggedString text = TranslatorFormattedStringExtensions.Translate("LetterFarmAnimalsWanderIn", (NamedArgument)(PawnKindDef.GetLabelPlural(-1)));

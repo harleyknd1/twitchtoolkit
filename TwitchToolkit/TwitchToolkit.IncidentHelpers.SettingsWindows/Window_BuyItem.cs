@@ -17,7 +17,7 @@ public class Window_BuyItem : Window
 	{
         Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
-		listing.Label("Buy Item Settings", -1f, (string)null);
+		listing.Label("Buy Item Settings");
 		traitsBuffer = AddTraitSettings.maxTraits.ToString();
 		listing.CheckboxLabeled("Should items be researched before being buyable?", ref BuyItemSettings.mustResearchFirst, (string)null);
 		((Listing)listing).End();

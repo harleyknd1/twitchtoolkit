@@ -8,9 +8,9 @@ namespace TwitchToolkit.Incidents;
 
 public class IncidentWorker_RaidEnemy : IncidentWorker_Raid
 {
-	protected override bool FactionCanBeGroupSource(Faction f, Map map, bool desperate = false)
+    public override bool FactionCanBeGroupSource(Faction f, IncidentParms parms, bool desperate = false)
 	{
-		return FactionCanBeGroupSource(f, map, desperate) && FactionUtility.HostileTo(f, Faction.OfPlayer) && (desperate || (float)GenDate.DaysPassed >= f.def.earliestRaidDays);
+		return base.FactionCanBeGroupSource(f, parms, desperate) && f.HostileTo(Faction.OfPlayer) && (desperate || (float)GenDate.DaysPassed >= f.def.earliestRaidDays);
 	}
 
 	protected override bool TryExecuteWorker(IncidentParms parms)
@@ -39,14 +39,14 @@ public class IncidentWorker_RaidEnemy : IncidentWorker_Raid
 		{
 			num = 999999f;
 		}
-		return PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, map, false)), true, true, true, true) || PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, map, true)), true, true, true, true);
+		return PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, parms, false)), true, true, true, true) || PawnGroupMakerUtility.TryGetRandomFactionForCombatPawnGroup(num, out parms.faction, (Predicate<Faction>)((Faction f) => FactionCanBeGroupSource(f, parms, true)), true, true, true, true);
 	}
 
 	protected override void ResolveRaidPoints(IncidentParms parms)
 	{
 		if (parms.points <= 0f)
 		{
-			Log.Error("RaidEnemy is resolving raid points. They should always be set before initiating the incident.", false);
+			Log.Error("RaidEnemy is resolving raid points. They should always be set before initiating the incident.");
 			parms.points = StorytellerUtility.DefaultThreatPointsNow(parms.target);
 		}
 	}
@@ -64,7 +64,7 @@ public class IncidentWorker_RaidEnemy : IncidentWorker_Raid
 			where d.Worker.CanUseWith(parms, groupKind) && (parms.raidArrivalMode != null || (d.arriveModes != null && GenCollection.Any<PawnsArrivalModeDef>(d.arriveModes, (Predicate<PawnsArrivalModeDef>)((PawnsArrivalModeDef x) => x.Worker.CanUseWith(parms)))))
 			select d, (Func<RaidStrategyDef, float>)((RaidStrategyDef d) => d.Worker.SelectionWeight(map, parms.points)), out parms.raidStrategy))
 		{
-			Log.Error(string.Concat("No raid stategy for ", parms.faction, " with points ", parms.points, ", groupKind=", groupKind, "\nparms=", parms), false);
+			Log.Error(string.Concat("No raid stategy for ", parms.faction, " with points ", parms.points, ", groupKind=", groupKind, "\nparms=", parms));
 			if (!Prefs.DevMode)
 			{
 				parms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;

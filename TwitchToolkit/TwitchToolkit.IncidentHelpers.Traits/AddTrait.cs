@@ -81,10 +81,10 @@ public class AddTrait : IncidentHelperVariables
 		TraitDegreeData traitDegreeData = traitDef.DataAtDegree(buyableTrait.degree);
 		if (traitDegreeData != null && traitDegreeData.skillGains != null)
 		{
-			foreach (KeyValuePair<SkillDef, int> pair in traitDegreeData.skillGains)
+			foreach (var pair in traitDegreeData.skillGains)
 			{
-				SkillRecord skill = pawn.skills.GetSkill(pair.Key);
-				int num = TraitHelpers.FinalLevelOfSkill(pawn, pair.Key);
+				SkillRecord skill = pawn.skills.GetSkill(pair.skill);
+				int num = TraitHelpers.FinalLevelOfSkill(pawn, pair.skill);
 				skill.Level = (num);
 			}
 		}
