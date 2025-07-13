@@ -1,10 +1,11 @@
+using RimWorld;
 using UnityEngine;
 using Verse;
 
 namespace TwitchToolkit.Utilities
 {
     [StaticConstructorOnStartup]
-    public class WeatherOverlay_VomitRain : SkyOverlay
+    public class WeatherOverlay_VomitRain : WeatherOverlay_ToxRain
     {
         private static readonly Material RainOverlayWorld = MatLoader.LoadMat("Weather/RainOverlayWorld");
 

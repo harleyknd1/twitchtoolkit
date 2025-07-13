@@ -17,7 +17,7 @@ public class Window_LevelPawn : Window
 	{
         Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
-		listing.Label("Level Pawn Settings", -1f, (string)null);
+		listing.Label("Level Pawn Settings");
 		xpBuffer = LevelPawnSettings.xpMultiplier.ToString();
 		listing.TextFieldNumericLabeled<float>("XP Multiplier", ref LevelPawnSettings.xpMultiplier, ref xpBuffer, 0.5f, 5f);
 		((Listing)listing).End();

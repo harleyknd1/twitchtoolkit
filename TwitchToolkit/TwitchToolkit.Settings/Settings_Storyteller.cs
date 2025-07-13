@@ -97,7 +97,7 @@ public static class Settings_Storyteller
 		//IL_0097: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_00b3: Unknown result type (might be due to invalid IL or missing erences)
 		//IL_00cf: Unknown result type (might be due to invalid IL or missing erences)
-		optionsListing.Label("All", -1f, null);
+		optionsListing.Label("All");
 		optionsListing.GapLine(12f);
 		optionsListing.SliderLabeled("TwitchToolkitVoteTime".Translate(), ref ToolkitSettings.VoteTime, Math.Round((double)ToolkitSettings.VoteTime).ToString(), 1f, 15f);
 		optionsListing.SliderLabeled("TwitchToolkitVoteOptions".Translate(), ref ToolkitSettings.VoteOptions, Math.Round((double)ToolkitSettings.VoteOptions).ToString(), 2f, 5f);

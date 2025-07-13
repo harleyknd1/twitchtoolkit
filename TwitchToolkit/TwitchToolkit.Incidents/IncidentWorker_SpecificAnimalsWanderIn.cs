@@ -38,8 +38,8 @@ public class IncidentWorker_SpecificAnimalsWanderIn : IncidentWorker
 	private bool TryFindAnimalKind(int tile, out PawnKindDef animalKind)
 	{
 		return GenCollection.TryRandomElementByWeight<PawnKindDef>(from k in DefDatabase<PawnKindDef>.AllDefs
-			where k.RaceProps.Animal && k.RaceProps.wildness < 0.35f && Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, k.race)
-			select k, (Func<PawnKindDef, float>)((PawnKindDef k) => 0.420000017f - k.RaceProps.wildness), out animalKind);
+			where k.RaceProps.Animal && k.RaceProps.petness < 0.35f && Find.World.tileTemperatures.SeasonAndOutdoorTemperatureAcceptableFor(tile, k.race)
+			select k, (Func<PawnKindDef, float>)((PawnKindDef k) => 0.420000017f - k.RaceProps.petness), out animalKind);
 	}
 
 	protected override bool CanFireNowSub(IncidentParms parms)

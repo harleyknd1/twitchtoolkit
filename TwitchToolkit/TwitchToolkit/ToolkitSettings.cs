@@ -273,7 +273,7 @@ public class ToolkitSettings : ModSettings
 		Widgets.BeginScrollView(mainRect, ref scrollVector2, viewRect, true);
 		options.Begin(viewRect);
 		Text.Font =((GameFont)2);
-		options.Label("Coins", -1f, null);
+		options.Label("Coins");
 		Text.Font =((GameFont)1);
 		options.Gap(12f);
 		options.AddLabeledNumericalTextField("TwitchToolkitStartingBalance".Translate(), ref StartingBalance, 0.8f);
@@ -290,7 +290,7 @@ public class ToolkitSettings : ModSettings
 		options.GapLine(12f);
 		options.Gap(12f);
 		Text.Font =((GameFont)2);
-		options.Label("Cooldowns", -1f, null);
+		options.Label("Cooldowns");
 		Text.Font =((GameFont)1);
 		options.Gap(12f);
 		options.SliderLabeled("Days per cooldown period",  ref EventCooldownInterval, Math.Round((double)EventCooldownInterval).ToString(), 1f, 15f);
@@ -306,7 +306,7 @@ public class ToolkitSettings : ModSettings
 		options.GapLine(12f);
 		options.Gap(12f);
 		Text.Font =((GameFont)2);
-		options.Label("Karma", -1f, null);
+		options.Label("Karma");
 		Text.Font =((GameFont)1);
 		options.Gap(12f);
 		options.SliderLabeled("TwitchToolkitStartingKarma".Translate(),  ref StartingKarma, Math.Round((double)StartingKarma).ToString(), 50f, 250f);
@@ -347,7 +347,7 @@ public class ToolkitSettings : ModSettings
 		options.GapLine(12f);
 		options.Gap(12f);
 		Text.Font =((GameFont)2);
-		options.Label("Patches", -1f, null);
+		options.Label("Patches");
 		Text.Font =((GameFont)1);
 		options.Gap(12f);
 		foreach (ToolkitExtension extension in Settings_ToolkitExtensions.GetExtensions)
@@ -364,7 +364,7 @@ public class ToolkitSettings : ModSettings
 		options.GapLine(12f);
 		options.Gap(12f);
 		Text.Font =((GameFont)2);
-		options.Label("Store", -1f, null);
+		options.Label("Store");
 		Text.Font =((GameFont)1);
 		options.Gap(12f);
 		options.CheckboxLabeled("TwitchToolkitEarningCoins".Translate(), ref EarningCoins, null);
@@ -395,10 +395,10 @@ public class ToolkitSettings : ModSettings
 		options.GapLine(12f);
 		options.Gap(12f);
 		Text.Font =((GameFont)2);
-		options.Label("Storyteller", -1f, null);
+		options.Label("Storyteller");
 		Text.Font =((GameFont)1);
 		options.Gap(12f);
-		options.Label("All", -1f, null);
+		options.Label("All");
 		options.GapLine(12f);
 		options.SliderLabeled("TwitchToolkitVoteTime".Translate(),  ref VoteTime, Math.Round((double)VoteTime).ToString(), 1f, 15f);
 		options.SliderLabeled("TwitchToolkitVoteOptions".Translate(),  ref VoteOptions, Math.Round((double)VoteOptions).ToString(), 2f, 5f);
@@ -415,7 +415,7 @@ public class ToolkitSettings : ModSettings
 		options.GapLine(12f);
 		options.Gap(12f);
 		Text.Font =((GameFont)2);
-		options.Label("Viewers", -1f, null);
+		options.Label("Viewers");
 		Text.Font =((GameFont)1);
 		options.Gap(12f);
 		options.CheckboxLabeled("Allow viewers to !joinqueue to join name queue?", ref EnableViewerQueue, null);
@@ -424,9 +424,9 @@ public class ToolkitSettings : ModSettings
 		options.AddLabeledNumericalTextField("Cost to join queue:", ref CostToJoinQueue, 0.8f);
 		options.Gap(12f);
 		options.GapLine(12f);
-		options.Label("Special Viewers", -1f, null);
+		options.Label("Special Viewers");
 		options.Gap(12f);
-		options.Label("<color=#D9BB25>Subscribers</color>", -1f, null);
+		options.Label("<color=#D9BB25>Subscribers</color>");
 		string subExtraCoinBuffer = SubscriberExtraCoins.ToString();
 		string subCoinMultiplierBuffer = SubscriberCoinMultiplier.ToString();
 		string subExtraVotesBuffer = SubscriberExtraVotes.ToString();
@@ -434,7 +434,7 @@ public class ToolkitSettings : ModSettings
 		options.TextFieldNumericLabeled<float>("Coin bonus multiplier", ref SubscriberCoinMultiplier, ref subCoinMultiplierBuffer, 1f, 5f);
 		options.TextFieldNumericLabeled<int>("Extra votes", ref SubscriberExtraVotes, ref subExtraVotesBuffer, 0f, 100f);
 		options.Gap(12f);
-		options.Label("<color=#5F49F2>VIPs</color>", -1f, null);
+		options.Label("<color=#5F49F2>VIPs</color>");
 		string vipExtraCoinBuffer = VIPExtraCoins.ToString();
 		string vipCoinMultiplierBuffer = VIPCoinMultiplier.ToString();
 		string vipExtraVotesBuffer = VIPExtraVotes.ToString();
@@ -442,7 +442,7 @@ public class ToolkitSettings : ModSettings
 		options.TextFieldNumericLabeled<float>("Coin bonus multiplier", ref VIPCoinMultiplier, ref vipCoinMultiplierBuffer, 1f, 5f);
 		options.TextFieldNumericLabeled<int>("Extra votes",ref  VIPExtraVotes, ref vipExtraVotesBuffer, 0f, 100f);
 		options.Gap(12f);
-		options.Label("<color=#238C48>Mods</color>", -1f, null);
+		options.Label("<color=#238C48>Mods</color>");
 		string modExtraCoinBuffer = ModExtraCoins.ToString();
 		string modCoinMultiplierBuffer = ModCoinMultiplier.ToString();
 		string modExtraVotesBuffer = ModExtraVotes.ToString();

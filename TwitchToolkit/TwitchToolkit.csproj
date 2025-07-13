@@ -29,7 +29,7 @@
     <erence Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4035-beta" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4495-beta" />
     <PackageReference Include="Lib.Harmony" Version="2.3.1.1" />
     <PackageReference Include="MoonSharp" Version="2.0.0" />
   </ItemGroup>

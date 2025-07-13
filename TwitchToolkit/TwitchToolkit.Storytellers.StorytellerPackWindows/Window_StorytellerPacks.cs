@@ -24,12 +24,12 @@ public class Window_StorytellerPacks : Window
 		Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
 		Text.Font =((GameFont)2);
-		listing.Label("Storyteller Packs", -1f, (string)null);
+		listing.Label("Storyteller Packs");
 		Text.Font =((GameFont)1);
 		((Listing)listing).GapLine(12f);
-		listing.Label("StorytellerPacks are packs of different types of votes. They each have their own settings, can be activated at the same time, and can be activated alongside normal storytellers.", -1f, (string)null);
+		listing.Label("StorytellerPacks are packs of different types of votes. They each have their own settings, can be activated at the same time, and can be activated alongside normal storytellers.");
 		((Listing)listing).GapLine(12f);
-		listing.Label("All storyteller packs will consider the global weights when choosing which votes to use. A weight of 0 would never be picked, meaning it is disabled.", -1f, (string)null);
+		listing.Label("All storyteller packs will consider the global weights when choosing which votes to use. A weight of 0 would never be picked, meaning it is disabled.");
 		((Listing)listing).Gap(12f);
 		if (listing.ButtonTextLabeled("Edit Global Vote Weights", "Edit Weights"))
 		{
@@ -39,7 +39,7 @@ public class Window_StorytellerPacks : Window
 		}
 		((Listing)listing).Gap(12f);
 		((Listing)listing).GapLine(12f);
-		listing.Label("Enabled Storyteller Packs", -1f, (string)null);
+		listing.Label("Enabled Storyteller Packs");
 		((Listing)listing).Gap(24f);
 		((Listing)listing).ColumnWidth =(((Rect)( inRect)).width / 2f - 20f);
 		listing.CheckboxLabeled("<color=#6441A4>Torytalker</color> - Classic / Most Balanced", ref ToolkitSettings.ToryTalkerEnabled, (string)null);

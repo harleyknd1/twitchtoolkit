@@ -25,17 +25,17 @@ public class Window_ToolkitUtils : Window
 		//IL_00b3: Unknown result type (might be due to invalid IL or missing erences)
 		Listing_Standard listing = new Listing_Standard();
 		((Listing)listing).Begin(inRect);
-		listing.Label("Toolkit has detected ToolkitUtils is not active.", -1f, (string)null);
-		listing.Label("It is highly recommended to have ToolkitUtils Installed and Active.", -1f, (string)null);
+		listing.Label("Toolkit has detected ToolkitUtils is not active.");
+		listing.Label("It is highly recommended to have ToolkitUtils Installed and Active.");
 		Text.Font =((GameFont)2);
-		listing.Label("Features", -1f, (string)null);
+		listing.Label("Features");
 		Text.Font =((GameFont)1);
 		((Listing)listing).GapLine(12f);
-		listing.Label("* Improved UI", -1f, (string)null);
-		listing.Label("* More Events", -1f, (string)null);
-		listing.Label("* More Commands", -1f, (string)null);
-		listing.Label("* Tweaks to Toolkit", -1f, (string)null);
-		listing.Label("...And More!", -1f, (string)null);
+		listing.Label("* Improved UI");
+		listing.Label("* More Events");
+		listing.Label("* More Commands");
+		listing.Label("* Tweaks to Toolkit");
+		listing.Label("...And More!");
 		((Listing)listing).Gap(12f);
 		if (listing.ButtonText("ToolkitUtils Workshop Page", (string)null))
 		{
