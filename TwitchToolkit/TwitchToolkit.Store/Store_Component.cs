@@ -1,3 +1,4 @@
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace TwitchToolkit.Store;
 
 public class Store_Component : GameComponent
 {
+	private static int EventCooldownInDays => GenDate.TicksPerDay * ToolkitSettings.EventCooldownInterval;
+
 	public int lastID = 0;
 
 	public Dictionary<int, int> tickHistory = new Dictionary<int, int>();
@@ -32,13 +35,15 @@ public class Store_Component : GameComponent
 	{
 		int currentTick = Find.TickManager.TicksGame;
 		List<int> toRemove = new List<int>();
+
 		foreach (KeyValuePair<int, int> pair in tickHistory)
 		{
-			if (pair.Value + 60000 * ToolkitSettings.EventCooldownInterval < currentTick)
+			if (pair.Value + EventCooldownInDays < currentTick)
 			{
 				toRemove.Add(pair.Key);
 			}
 		}
+
 		foreach (int i in toRemove)
 		{
 			tickHistory.Remove(i);
@@ -49,96 +54,108 @@ public class Store_Component : GameComponent
 
 	public int IncidentsInLogOf(string abbreviation)
 	{
-		return abbreviationHistory.Where((KeyValuePair<int, string> pair) => pair.Value == abbreviation).Count();
+		return abbreviationHistory.Count((KeyValuePair<int, string> pair) => pair.Value == abbreviation);
 	}
 
 	public int KarmaTypesInLogOf(KarmaType karmaType)
 	{
-		return karmaHistory.Where((KeyValuePair<int, string> pair) => pair.Value == karmaType.ToString()).Count();
+		var karma = karmaType.ToString();
+		return karmaHistory.Count((KeyValuePair<int, string> pair) => pair.Value == karma);
 	}
 
-	public float DaysTillIncidentIsPurchaseable(StoreIncident incident)
+	public float DaysTillIncidentIsPurchaseable(StoreIncident incident) => DaysTillIncidentIsPurchaseable(incident, out _);
+
+	public float DaysTillIncidentIsPurchaseable(StoreIncident incident, out bool isKarmaCapped)
 	{
-		Store_Component component = Current.Game.GetComponent<Store_Component>();
-		List<int> associateLogIDS = new List<int>();
-		float ticksTillExpires = -1f;
-		float daysTillCooldownExpires = -1f;
-		if (((Def)incident).defName == "Item")
+		int karmaTick = GetKarmaOrItemCooldown(incident);
+		int capTick = GetIncidentCooldown(incident);
+
+		int cooldownTick;
+		if (karmaTick >= capTick)
 		{
-			if (ToolkitSettings.MaxEvents)
-			{
-				int logged4 = component.IncidentsInLogOf(incident.abbreviation);
-				bool onCooldownByKarmaType = logged4 >= ToolkitSettings.MaxCarePackagesPerInterval;
-			}
-			if (ToolkitSettings.EventsHaveCooldowns)
-			{
-				int logged3 = component.IncidentsInLogOf(incident.abbreviation);
-				bool onCooldownByIncidentCap = logged3 >= incident.eventCap;
-			}
-			foreach (KeyValuePair<int, string> pair3 in abbreviationHistory)
-			{
-				if (pair3.Value == incident.abbreviation)
-				{
-					associateLogIDS.Add(pair3.Key);
-				}
-			}
+			cooldownTick = karmaTick;
+			isKarmaCapped = true;
 		}
 		else
 		{
-			if (ToolkitSettings.MaxEvents)
-			{
-				int logged2 = component.KarmaTypesInLogOf(incident.karmaType);
-				bool onCooldownByKarmaType = Purchase_Handler.CheckTimesKarmaTypeHasBeenUsedRecently(incident);
-			}
-			if (ToolkitSettings.EventsHaveCooldowns)
-			{
-				int logged = component.IncidentsInLogOf(incident.abbreviation);
-				bool onCooldownByIncidentCap = logged >= incident.eventCap;
-			}
-			foreach (KeyValuePair<int, string> pair2 in abbreviationHistory)
-			{
-				if (pair2.Value == incident.abbreviation)
-				{
-					associateLogIDS.Add(pair2.Key);
-				}
-			}
-			foreach (KeyValuePair<int, string> pair in karmaHistory)
-			{
-				if (pair.Value == incident.karmaType.ToString())
-				{
-					associateLogIDS.Add(pair.Key);
-				}
-			}
+			cooldownTick = capTick;
+			isKarmaCapped = false;
 		}
-		foreach (int id in associateLogIDS)
+
+		if (cooldownTick < 0)
 		{
-			float ticksAgo = Find.TickManager.TicksGame - tickHistory[id];
-			float daysAgo = ticksAgo / 60000f;
-			float ticksTillExpiration = (float)(ToolkitSettings.EventCooldownInterval * 60000) - ticksAgo;
-			if (ticksTillExpires == -1f || ticksAgo < ticksTillExpiration)
-			{
-				ticksTillExpires = ticksAgo;
-				daysTillCooldownExpires = ticksTillExpiration / 60000f;
-			}
+			return -1;
 		}
-		return (float)Math.Round(daysTillCooldownExpires, 1);
+
+		int currentTick = Find.TickManager.TicksGame;
+		float expirationDays = ((float)(cooldownTick + EventCooldownInDays - currentTick)) / GenDate.TicksPerDay;
+		return (float)Math.Round(expirationDays, 1);
 	}
 
 	public void LogIncident(StoreIncident incident)
 	{
 		int currentTick = Find.TickManager.TicksGame;
 		int logID = lastID;
+
 		tickHistory.Add(logID, currentTick);
 		abbreviationHistory.Add(logID, incident.abbreviation);
 		karmaHistory.Add(logID, incident.karmaType.ToString());
+
 		lastID++;
 	}
 
 	public override void ExposeData()
 	{
-		Scribe_Values.Look<int>(ref lastID, "logID", 0, false);
-		Scribe_Collections.Look<int, int>(ref tickHistory, "tickHistory", (LookMode)1, (LookMode)1);
-		Scribe_Collections.Look<int, string>(ref abbreviationHistory, "incidentHistory", (LookMode)1, (LookMode)1);
-		Scribe_Collections.Look<int, string>(ref karmaHistory, "karmaHistory", (LookMode)1, (LookMode)1);
+		Scribe_Values.Look(ref lastID, "logID", 0);
+		Scribe_Collections.Look(ref tickHistory, "tickHistory", LookMode.Value, LookMode.Value);
+		Scribe_Collections.Look(ref abbreviationHistory, "incidentHistory", LookMode.Value, LookMode.Value);
+		Scribe_Collections.Look(ref karmaHistory, "karmaHistory", LookMode.Value, LookMode.Value);
+	}
+
+	private int GetKarmaOrItemCooldown(StoreIncident incident)
+	{
+		if (!ToolkitSettings.MaxEvents)
+		{
+			return -1;
+		}
+
+		if (incident.IsItem)
+		{
+			return FindMinIfCapped(abbreviationHistory, incident.abbreviation, ToolkitSettings.MaxCarePackagesPerInterval);
+		}
+
+		return FindMinIfCapped(karmaHistory, incident.karmaType.ToString(), Karma.GetKarmaCap(incident.karmaType));
+	}
+
+	private int GetIncidentCooldown(StoreIncident incident)
+	{
+		if (!ToolkitSettings.EventsHaveCooldowns)
+		{
+			return -1;
+		}
+
+		return FindMinIfCapped(abbreviationHistory, incident.abbreviation, incident.eventCap);
+	}
+
+	private int FindMinIfCapped(IEnumerable<KeyValuePair<int, string>> collection, string criteria, int needed)
+	{
+		int count = 0;
+		int minTick = int.MaxValue;
+
+		foreach (KeyValuePair<int, string> pair in collection)
+		{
+			if (pair.Value == criteria)
+			{
+				count++;
+				minTick = Math.Min(minTick, tickHistory[pair.Key]);
+			}
+		}
+
+		if (count >= needed)
+		{
+			return minTick;
+		}
+
+		return -1;
 	}
 }
