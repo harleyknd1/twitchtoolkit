@@ -1,53 +1,31 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyName>TwitchToolkit</AssemblyName>
-    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
-    <TargetFramework>net472</TargetFramework>
-  </PropertyGroup>
-  <PropertyGroup>
-    <LangVersion>Preview</LangVersion>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup />
-  <ItemGroup>
-    <Packageerence Include="Krafs.Rimworld." Version="1.4.3520-beta" />
-    <Packageerence Include="Lib.Harmony" Version="2.2.2" ExcludeAssets="runtime">
-      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </Packageerence>
-    <Packageerence Include="MoonSharp" Version="2.0.0" />
-    <Packageerence Include="HodlHodl.Rimworld.Toolkit.Core" Version="1.1.11" ExcludeAssets="runtime">
-      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </Packageerence>
-  </ItemGroup>
-  <ItemGroup>
-    <erence Include="TwitchLib.Client.Models">
-      <HintPath>..\..\..\Downloads\steamcmd\steamapps\workshop\content\294100\1718525787\v1.3\Assemblies\TwitchLib.Client.Models.dll</HintPath>
-    </erence>
-    <erence Include="MoonSharp.Interpreter">
-      <HintPath>..\..\..\Downloads\steamcmd\steamapps\workshop\content\294100\1718525787\v1.3\Assemblies\MoonSharp.Interpreter.dll</HintPath>
-    </erence>
-    <erence Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4495-beta" />
-    <PackageReference Include="Lib.Harmony" Version="2.3.1.1" />
-    <PackageReference Include="MoonSharp" Version="2.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="ToolkitCore">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\ToolkitCore.dll</HintPath>
-    </Reference>
-    <Reference Include="TwitchLib.Client">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="TwitchLib.Client.Enums">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.Enums.dll</HintPath>
-    </Reference>
-    <Reference Include="TwitchLib.Client.Models">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Client.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="TwitchLib.Communication">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\TwitchLib.Communication.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+    <!-- Package references -->
+    <ItemGroup>
+        <PackageReference Include="MoonSharp"/>
+        <PackageReference Include="Krafs.Rimworld.Ref"/>
+        <PackageReference Include="Lib.Harmony" ExcludeAssets="runtime"/>
+    </ItemGroup>
+    
+    <!-- Local references -->
+    <ItemGroup>
+        <Reference Include="ToolkitCore">
+            <Private>false</Private>
+        </Reference>
+        <Reference Include="TwitchLib.Client">
+            <Private>false</Private>
+            <HintPath>$(ToolkitCoreDir)\Assemblies\TwitchLib.Client.dll</HintPath>
+        </Reference>
+        <Reference Include="TwitchLib.Client.Enums">
+            <Private>false</Private>
+            <HintPath>$(ToolkitCoreDir)\Assemblies\TwitchLib.Client.Enums.dll</HintPath>
+        </Reference>
+        <Reference Include="TwitchLib.Client.Models">
+            <Private>false</Private>
+            <HintPath>$(ToolkitCoreDir)\Assemblies\TwitchLib.Client.Models.dll</HintPath>
+        </Reference>
+        <Reference Include="TwitchLib.Communication">
+            <Private>false</Private>
+            <HintPath>$(ToolkitCoreDir)\Assemblies\TwitchLib.Communication.dll</HintPath>
+        </Reference>
+    </ItemGroup>
 </Project>

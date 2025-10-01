@@ -1,45 +1,90 @@
-# Build
-Either use your preferred way to compile C# code, just make sure to target .NET 3.5 and then manually copy the files to the RimWorld Mods folder.
-Or you can use the provided Makefile, which also automates the copying part including filling up missing languages.
+# Twitch Toolkit
 
-# Contribute
-Just fork this repository, add your changes, push them to your fork and open a merge request to merge your changes into this repository.
-Also feel free to join the [Discord](https://discord.gg/qrtg224) if you have any questions or want to hang out.
+Twitch Toolkit is a mod for the game RimWorld that allows Twitch viewers to affect the game through digital currency.
 
-# Translations
-We are currently not accepting translations, I am sorry for the inconvenience.
+---
 
-# Commands
-## User Commands:
+## Project History
 
-**!balance, !bal, !coins** - check balance and karma rate
+- **TwitchStories** was the original mod, created by Finally.
+- **Twitch Toolkit** was forked and significantly developed from TwitchStories by hodlhodl, evolving into an independent mod.
+- The project is now actively maintained and developed by the Toolkit Community.
 
-**!buyevent** - Syntax: !buyevent skillincrease - purchase an event
+---
 
-**!buyitem** - Syntax: !buyitem beer 2 - purchase an item
+## License
 
-**!whatiskarma, !karma** - explains what the karma system is
+Twitch Toolkit is licensed under the [GNU Affero General Public License v3.0 (AGPL-3.0)](https://www.gnu.org/licenses/agpl-3.0.html).
+See the `LICENSE` file for the full license text and the `NOTICE` file for the detailed project lineage and attribution.
 
-**!purchaselist, !instructions** - gives users a link to the public purchase list and info on using the mod
+---
 
-**!modinfo** - gives users info about the mod
+## Installation
 
-## Admin Commands:
+### Steam Workshop
 
-**!refreshviewers** - updates viewers watching channel, this is for debugging mostly
+The mod is available on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3013874066). You
+will also need to subscribe to [ToolkitCore](https://steamcommunity.com/sharedfiles/filedetails/?id=3013877477), as well
+as [Harmony](https://steamcommunity.com/workshop/filedetails/?id=2009463077).
 
-**!karmaround** - simulates a coin reward round
+### Manual Installation
 
-**!givecoins** - Syntax: !givecoins @username 1000 - gives user 1000 coins
+1. Download the latest release from the [Releases](https://github.com/harleyknd1/twitchtoolkit/releases) page.
+2. Download the [Harmony](https://github.com/pardeike/HarmonyRimWorld/releases) library.
+3. Download the [ToolkitCore](https://github.com/harleyknd1/toolkitcore/releases) library.
+4. Extract the Harmony and ToolkitCore archives to your RimWorld Mods folder.
+5. Extract the TwitchToolkit archive to your RimWorld Mods folder.
+6. Enable the mods in the RimWorld Mods menu.
+7. Enjoy!
 
-**!giveallcoins** - Syntax: !giveallcoins 1000 - gives all users 1000 coins (can also be used with negative numbers to take coins)
+---
 
-**!resetviewers** - resets all viewers data back to default, must confirm twice
+## Contributing
 
-**!checkuser** - Syntax: !checkuser @username - do a balance check on the user
+Contributions, bug reports, and feature requests are welcome!
 
-**!setkarma** - Syntax: !setuserkarma @username 100 - set user karma to 100% (needs message)
+--
 
-**!togglestore** - toggle ability for users to purchase items/events
+## Building
 
-**!togglecoins** - toggle ability for users to earn coins while viewing
+To build the mod, you will need the following:
+
+- [Mono](https://www.mono-project.com/download/stable/) if you’re not on Windows.
+- [.NET 4.7.2 Developer Pack](https://dotnet.microsoft.com/en-us/download/dotnet-framework/net472) if you're on Windows.
+- [Git](https://git-scm.com/downloads)
+- [RimWorld](https://rimworldgame.com/)
+- Your favorite IDE.
+
+We recognize people’s games are different, so we’ve provided properties you may change if the project doesn’t build for
+you:
+
+- `ToolkitCoreDir` is a property that points to the directory where your copy of ToolkitCore is located.
+- `SteamRootDir` is a property that points to the directory where your copy of Steam is located.
+- `RootDestinationDir` is a property that points to the directory where you’ll house your compiled copy of Twitch Toolkit. The build process will insert a valid "vX.X\Assemblies" subdirectory at build time.
+- `RimWorldModsDir` is a property that points to the directory where your mods folder of RimWorld is located.
+
+You may set either of these properties at build time in your IDE, or through the command line:
+
+- Command line: `msbuild /p:ToolkitCoreDir=C:\path\to\toolkitcore ...`
+- IDE: Refer to your IDE’s documentation on how to set global properties.
+
+---
+
+## Community and Support
+
+- **GitHub**: https://github.com/harleyknd1/twitchtoolkit
+- **Discord**: https://discord.gg/qrtg224
+- **Issue Tracker**: https://github.com/harleyknd1/twitchtoolkit/issues
+
+---
+
+## Acknowledgements
+
+Special thanks to:
+- Finally for creating TwitchStories.
+- [hodlhodl](https://github.com/hodlhodl1132) for creating TwitchToolkit.
+- Toolkit Community—Ongoing maintainers and contributors.
+
+---
+
+*Happy Modding!*

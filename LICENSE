@@ -659,3 +659,20 @@ specific requirements.
 if any, to sign a "copyright disclaimer" for the program, if necessary.
 For more information on this, and how to apply and follow the GNU AGPL, see
 <http://www.gnu.org/licenses/>.
+
+
+## Additional License Information
+
+This project, Twitch Toolkit, is a fork of the project TwitchStories, originally
+created by Finally.
+
+Substantial modifications were made by hodlhodl to evolve the project into Twitch
+Toolkit, an independent mod for RimWorld.
+
+Twitch Toolkit is now maintained and developed by the Toolkit Community.
+
+All source code is provided under the terms of the GNU Affero General Public
+License v3.0 as stated above.
+
+To comply with AGPLv3, full source code and license information are available at:
+https://github.com/harleyknd1/twitchtoolkit

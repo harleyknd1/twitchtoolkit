@@ -1,0 +1,105 @@
+﻿<Project>
+    <!--
+    Some MSBuild sorcery that checks if the project being built references
+    the RimWorld binary (the Krafs.Rimworld.Ref NuGet package).
+    -->
+    <Target Name="DetermineIfRimWorldTarget" AfterTargets="BeforeResolveReferences">
+        <ItemGroup>
+            <_FilteredPackageReference Include="@(PackageReference)" Condition="'%(Identity)' == 'Krafs.Rimworld.Ref'"/>
+        </ItemGroup>
+        
+        <PropertyGroup>
+            <_RimrefPackageReferenceName>%(_FilteredPackageReference.Identity)</_RimrefPackageReferenceName>
+            <_IsRimWorldProject Condition="'$(_RimrefPackageReferenceName)' != ''">true</_IsRimWorldProject>
+            <_IsRimWorldProject Condition="'$(_RimrefPackageReferenceName)' == ''">false</_IsRimWorldProject>
+        </PropertyGroup>
+    </Target>
+    
+    <!--
+    Some MSBuild sorcery that extrapolates the currently targeted RimWorld 
+    version from the version of Krafs.Rimworld.Ref referenced.
+    
+    It might look similar to the above sorcery, but this one references the
+    "PackageVersion" element instead of the "PackageReference" since NuGet
+    dependencies are managed within the Directory.Packages.props file instead
+    of being direct references within the project.
+    -->
+    <Target Name="FindRimWorldVersion" AfterTargets="BeforeResolveReferences" DependsOnTargets="DetermineIfRimWorldTarget" Condition="'$(_IsRimWorldProject)' == 'true'">
+        <ItemGroup>
+            <_FilteredPackageName Include="@(PackageVersion)" Condition="'%(Identity)' == 'Krafs.Rimworld.Ref'" />
+        </ItemGroup>
+        
+        <PropertyGroup>
+            <_RimWorldVersion>%(_FilteredPackageName.Version)</_RimWorldVersion>
+            
+            <!-- Strips the "-beta" suffix from Krafs.Rimworld.Ref's version, if it exists. -->
+            <_CleanedRimWorldVersion Condition="$(_RimWorldVersion.Contains('-'))">$(_RimWorldVersion.Substring(0, $(_RimWorldVersion.IndexOf('-'))))</_CleanedRimWorldVersion>
+            <_CleanedRimWorldVersion Condition="!$(_RimWorldVersion.Contains('-'))">$(_RimWorldVersion)</_CleanedRimWorldVersion>
+            <_RimWorldVersionMajorMinor>$([System.Version]::Parse('$(_CleanedRimWorldVersion)').ToString(2))</_RimWorldVersionMajorMinor>
+            <_RimWorldVersionMajor>$(_RimWorldVersionMajorMinor.Split('.')[0])</_RimWorldVersionMajor>
+            <_RimWorldVersionMinor>$(_RimWorldVersionMajorMinor.Split('.')[1])</_RimWorldVersionMinor>
+        </PropertyGroup>
+    </Target>
+    
+    <!--
+    Some sorcery to dynamically reference the appropriate ToolkitCore binary
+    for the current verison of RimWorld. In the event it doesn't exist,
+    the target includes the previous version as a valid substitute.
+    
+    This target exists because the "_RimWorldVersionMajorMinor" property exists
+    in a "dynamic" context, while a direct reference in a csproj file would be
+    a "static" context. To work around this, without having to litter hardcoded
+    versions throughout the pipeline, we'll update ToolkitCore references
+    dynamically just before MSBuild begins resolving references.
+    -->
+    <Target Name="ModifyToolkitCoreHintPath" AfterTargets="FindRimWorldVersion" Condition="'$(_IsRimWorldProject)' == 'true'">
+        <ItemGroup>
+            <_FilteredReference Include="@(Reference)" Condition="'%(Identity)' == 'ToolkitCore'" />
+        </ItemGroup>
+        
+        <PropertyGroup>
+            <!-- Stub -->
+            <_ToolkitCoreReference>%(_FilteredReference.Identity)</_ToolkitCoreReference>
+            
+            <_PreviousRimWorldMinorVersion>$([MSBuild]::Subtract($(_RimWorldVersionMinor), 1))</_PreviousRimWorldMinorVersion>
+            <_PreviousRimWorldMinorVersion Condition="'$(_PreviousRimWorldMinorVersion)' == '-1'">0</_PreviousRimWorldMinorVersion>
+            <_PreviousRimWorldVersion>$(_RimWorldVersionMajor).$(_PreviousRimWorldMinorVersion)</_PreviousRimWorldVersion>
+            
+            <_LatestToolkitCoreVersion>$(ToolkitCoreDir)\v$(_RimWorldVersionMajorMinor)\Assemblies\ToolkitCore.dll</_LatestToolkitCoreVersion>
+            <_PreviousToolkitCoreVersion>$(ToolkitCoreDir)\v$(_PreviousRimWorldVersion)\Assemblies\ToolkitCore.dll</_PreviousToolkitCoreVersion>
+            <_ToolkitCorePath>$(_LatestToolkitCoreVersion)</_ToolkitCorePath>
+            <_ToolkitCorePath Condition="!Exists($(_LatestToolkitCoreVersion))">$(_PreviousToolkitCoreVersion)</_ToolkitCorePath>
+        </PropertyGroup>
+        
+        <ItemGroup Condition="'$(_ToolkitCoreReference)' != ''">
+            <Reference Condition="'%(Reference.Identity)' == 'ToolkitCore'">
+                <HintPath>$(_ToolkitCorePath)</HintPath>
+            </Reference>
+        </ItemGroup>
+    </Target>
+    
+    <!--
+    Initial setup for the build output's destination directory.
+    
+    We won't directly modify either the "OutputPath" nor "OutDir" properties
+    since modifying those have been flaky in certain cases.
+    -->
+    <Target Name="CopyDestinationDirectory" AfterTargets="AfterBuild">
+        <PropertyGroup>
+            <_VersionedFolder Condition="$(PreferPrefixedVersionMatrixes)">v$(_RimWorldVersionMajorMinor)</_VersionedFolder>
+            <_VersionedFolder Condition="!$(PreferPrefixedVersionMatrixes)">$(_RimWorldVersionMajorMinor)</_VersionedFolder>
+            
+            <_DestinationDir>$([System.IO.Path]::Combine($(RootDestinationDir), $(_VersionedFolder), Assemblies))</_DestinationDir>
+            <_DestinationDir>$([MSBuild]::NormalizeDirectory('$(_DestinationDir)'))</_DestinationDir>
+        </PropertyGroup>
+        
+        <ItemGroup>
+            <_DllCopyItems Include="$(TargetDir)\*.dll" />
+            <_PdbCopyItems Include="$(TargetDir)\*.pdb" />
+        </ItemGroup>
+        
+        <Message Text="Copying files from $(TargetDir) to $(_DestinationDir) ..." Importance="high" />
+        <Copy SourceFiles="@(_DllCopyItems)" DestinationFolder="$(_DestinationDir)" SkipUnchangedFiles="true" ContinueOnError="true" Condition="Exists('%(FullPath)')" />
+        <Copy SourceFiles="@(_PdbCopyItems)" DestinationFolder="$(_DestinationDir)" SkipUnchangedFiles="true" ContinueOnError="true" Condition="Exists('%(FullPath)')" />
+    </Target>
+</Project>

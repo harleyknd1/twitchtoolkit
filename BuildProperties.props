@@ -1,0 +1,52 @@
+﻿<!--
+This project houses MSBuild properties used by the solution. 
+They've been consolidated into this file for your convenience.
+
+The following properties modify certain behaviors in the build
+process, such as changing where the compiled binaries will be
+outputted to, where MSBuild can find the ToolkitCore and co.
+binaries, etc.
+
+To tailor these properties to your local machine, refer to your
+IDE's documentation on how to set MSBuild global properties for
+the project, or manually set the properties using the /p:XXX
+MSBuild flag.
+
+DO NOT MODIFY THIS FILE TO SUIT YOUR ENVIRONMENT. You may end
+up committing your changes to this file, leading to git churning.
+-->
+<Project>
+    <PropertyGroup>
+        <!--
+        The root directory for your Steam installation. This should be
+        the directory where you'll find the "steamapps" folder.
+        -->
+        <SteamRootDir>..\..\..\..\..\..\..\Program Files (x86)\Steam</SteamRootDir>
+        
+        <!-- The root directory for your game's mods directory. -->
+        <RimWorldModsDir>$(SteamRootDir)\steamapps\common\RimWorld\Mods</RimWorldModsDir>
+        
+        <!--
+        The root directory to your copy of ToolkitCore. By default it briefly
+        checks your mods directory, as well as the game's workshop folder.
+        -->
+        <ToolkitCoreDir>$(RimWorldModsDir)\ToolkitCore</ToolkitCoreDir>
+        <ToolkitCoreDir Condition="!Exists('$(ToolkitCoreDir)')">$(SteamRootDir)\steamapps\workshop\content\294100\3013877477</ToolkitCoreDir>
+        
+        <!--
+        The root directory where solution's build output(s) will be copied to.
+        This intentionally doesn't specify a version matrix, such as "v1.4" or "1.4"
+        as this is appended automagically later in the build process. 
+        -->
+        <RootDestinationDir>$(RimWorldModsDir)\$(Product)\</RootDestinationDir>
+        
+        <!--
+        Whether to prepend the "v" to the version matrix (i.e., "v1.4" versus "1.4"
+        
+        The former would require maintaining a "LoadFolders.xml" file, while the
+        latter will leave the load resolution up to the game. Twitch Toolkit currently
+        prefers the latter for legacy reasons.
+        -->
+        <PreferPrefixedVersionMatrixes>true</PreferPrefixedVersionMatrixes>
+    </PropertyGroup>
+</Project>

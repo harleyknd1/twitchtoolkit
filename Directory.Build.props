@@ -1,0 +1,34 @@
+﻿<Project>
+    <!-- Compiler metadata -->
+    <PropertyGroup>
+        <LangVersion>preview</LangVersion>
+        <TargetFramework>net472</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    </PropertyGroup>
+    
+    <!-- Product information -->
+    <PropertyGroup>
+        <Version>2.0.10</Version>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <PackageLicenseExpression>AGPL-3.0-only</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseUrl>https://licenses.nuget.org/AGPL-3.0-only</PackageLicenseUrl>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <Product>Twitch Toolkit</Product>
+        <Company>Toolkit Community</Company>
+        <Authors>Finally, hodlhodl, Toolkit Community</Authors>
+        <Copyright>Copyright (c) $([System.DateTime]::Now.ToString("yyyy")) Finally, hodlhodl, and contributors</Copyright>
+        <Description>Twitch Toolkit is a mod for RimWorld, originally based on TwitchStories by Finally. It's was significantly modified by hodlhodl and is now maintained by the Toolkit Community.</Description>
+        
+        <RepositoryUrl>https://github.com/harleyknd1/twitchtoolkit</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
+    
+    <Import Project="BuildProperties.props" />
+</Project>
